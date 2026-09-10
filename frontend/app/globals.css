@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #090c10;
-  --foreground: #ededed;
+  --background: #060911;
+  --foreground: #f1f5f9;
 }
 
 body {
@@ -20,25 +20,82 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d1117;
+  background: #080c16;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f293d;
+  background: #1e293b;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+/* Continuous 3D Video-like Pan & Zoom (Ken Burns Engine) */
+@keyframes kenBurns {
+  0% {
+    transform: scale(1.02) translate3d(0%, 0%, 0) rotate(0deg);
   }
   50% {
-    box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);
+    transform: scale(1.15) translate3d(-1.5%, 1.2%, 0) rotate(0.4deg);
+  }
+  100% {
+    transform: scale(1.02) translate3d(0%, 0%, 0) rotate(0deg);
   }
 }
 
-.pulse-glow {
-  animation: pulseGlow 2.5s infinite;
+.animate-ken-burns {
+  animation: kenBurns 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* CRT Scanlines and Digital Screen Raster */
+.bg-scanlines {
+  background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.45) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(99, 102, 241, 0.03),
+      rgba(16, 185, 129, 0.01),
+      rgba(6, 182, 212, 0.03)
+    );
+  background-size: 100% 3px, 6px 100%;
+}
+
+.bg-radial-vignette {
+  background: radial-gradient(circle at 50% 40%, transparent 20%, rgba(4, 6, 11, 0.88) 85%);
+}
+
+/* Glassmorphism Cyberpunk Cards */
+.glass-panel {
+  background: rgba(11, 16, 28, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.glass-panel-glow {
+  background: rgba(14, 20, 36, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  box-shadow: 0 10px 40px -10px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Pulsing Neon Borders */
+@keyframes neonBorderPulse {
+  0%, 100% {
+    border-color: rgba(99, 102, 241, 0.35);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+  }
+  50% {
+    border-color: rgba(6, 182, 212, 0.6);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+  }
+}
+
+.neon-border-pulse {
+  animation: neonBorderPulse 3s infinite ease-in-out;
 }
