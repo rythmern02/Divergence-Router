@@ -38,7 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="border-b border-white/[0.06] bg-[#080a0f]/80 backdrop-blur-2xl sticky top-0 z-40 px-6 py-3.5">
+    <header className="border-b border-white/[0.06] bg-[#050505]/90 backdrop-blur-2xl sticky top-0 z-40 px-6 py-3.5">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center space-x-3.5">

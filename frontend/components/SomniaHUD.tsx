@@ -24,7 +24,7 @@ export const SomniaHUD: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full bg-[#080a0f] border-b border-white/[0.06] px-4 py-1.5 text-[11px] font-mono text-zinc-400 overflow-x-auto whitespace-nowrap scrollbar-none z-30 relative select-none">
+    <div className="w-full bg-[#050505] border-b border-white/[0.06] px-4 py-1.5 text-[11px] font-mono text-zinc-400 overflow-x-auto whitespace-nowrap scrollbar-none z-30 relative select-none">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
         {/* Network & Block Stream */}
         <div className="flex items-center space-x-5">

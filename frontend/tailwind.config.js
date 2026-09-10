@@ -8,13 +8,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#0b0e14",
-        card: "#121722",
-        cardBorder: "#1e2638",
-        brandPrimary: "#6366f1",
-        brandSuccess: "#10b981",
-        brandWarning: "#f59e0b",
-        brandDanger: "#ef4444",
+        background: "#050505",
+        card: "#0e0e0e",
+        cardBorder: "#222222",
+        brandPrimary: "#ffffff",
+        brandSuccess: "#f4f4f5",
+        brandWarning: "#a1a1aa",
+        brandDanger: "#71717a",
       },
     },
   },

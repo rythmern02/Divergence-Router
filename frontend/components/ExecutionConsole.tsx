@@ -53,7 +53,7 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
             max="5000"
             value={collateralPerLeg}
             onChange={(e) => setCollateralPerLeg(Math.max(1, Number(e.target.value)))}
-            className="w-full bg-black/40 border border-white/[0.08] focus:border-indigo-400/60 rounded-xl px-4 py-3 text-white font-mono text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400/30 tabular-nums"
+            className="w-full bg-black/50 border border-white/[0.08] focus:border-white/40 rounded-xl px-4 py-3 text-white font-mono text-sm focus:outline-none focus:ring-1 focus:ring-white/10 tabular-nums"
           />
           <span className="absolute right-4 top-3 text-xs text-zinc-500 font-mono">
             tUSDC

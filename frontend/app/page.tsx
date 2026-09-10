@@ -89,7 +89,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#07090e] text-zinc-100 relative selection:bg-zinc-700 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#050505] text-zinc-100 relative selection:bg-zinc-700 selection:text-white">
       {/* 3D Atmospheric Background Layer */}
       <BackgroundExperience />
 
