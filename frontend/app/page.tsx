@@ -12,6 +12,7 @@ import { ActivePositions, PositionRecord } from "../components/ActivePositions";
 import { ChaosTrigger } from "../components/ChaosTrigger";
 import { PRESET_STRATEGIES, SplitStrategy, CONTRACT_ADDRESSES, EXPLORER_URL } from "../lib/constants";
 import { sound } from "../lib/soundFx";
+import { DivergenceLogo } from "../components/DivergenceLogo";
 import { ExternalLink, ShieldCheck } from "lucide-react";
 
 export default function Home() {
@@ -104,7 +105,7 @@ export default function Home() {
       {/* Main Terminal Grid */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-6 relative z-10">
         {/* Minimalist Hero Section */}
-        <div className="surface-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+        <div className="surface-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center space-x-2 text-xs font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-3 py-1 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
@@ -152,6 +153,17 @@ export default function Home() {
                 <span>Proof Redeem Tx (#484847020)</span>
                 <ExternalLink className="w-2.5 h-2.5 text-zinc-500" />
               </a>
+            </div>
+          </div>
+
+          {/* Brand Mark Hero Card */}
+          <div className="hidden md:flex flex-col items-center justify-center p-5 rounded-2xl bg-black/40 border border-white/[0.08] shadow-inner flex-shrink-0">
+            <DivergenceLogo size={84} useImage={true} className="shadow-2xl ring-1 ring-white/10" />
+            <div className="text-[10px] font-mono text-zinc-400 mt-2.5 tracking-wider uppercase">
+              Divergence Mark
+            </div>
+            <div className="text-[9px] font-mono text-zinc-600">
+              Protocol Primitive
             </div>
           </div>
         </div>

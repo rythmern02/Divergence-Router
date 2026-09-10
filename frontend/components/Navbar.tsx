@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Activity, ShieldCheck, ExternalLink, Wallet, Volume2, VolumeX } from "lucide-react";
 import { SOMNIA_CHAIN_ID, EXPLORER_URL, CONTRACT_ADDRESSES } from "../lib/constants";
 import { sound } from "../lib/soundFx";
+import { DivergenceLogo } from "./DivergenceLogo";
 
 interface NavbarProps {
   userAddress: string | null;
@@ -41,9 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center space-x-3.5">
-          <div className="h-9 w-9 rounded-xl bg-white/[0.06] border border-white/[0.1] flex items-center justify-center font-mono font-bold text-sm text-zinc-100 shadow-sm">
-            &Delta;
-          </div>
+          <DivergenceLogo size={36} useImage={true} className="flex-shrink-0" />
           <div>
             <div className="flex items-center space-x-2">
               <span className="font-semibold text-base tracking-tight text-white">
