@@ -1,0 +1,30 @@
+{
+  "name": "divergence-router",
+  "version": "1.0.0",
+  "description": "Structured relative-value and decorrelation execution engine for Somnia DreamDEX Event Contracts",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:testnet": "hardhat run scripts/deploy.ts --network somniaTestnet",
+    "quant": "npx tsx scripts/quant.ts",
+    "chaos": "npx tsx scripts/chaos-thin-book.ts"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.2.0",
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.13.1",
+    "chai": "^4.5.0",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
+    "hardhat": "^2.22.18",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@somnia-chain/markets-sdk": "^0.29.0",
+    "viem": "^2.23.4"
+  }
+}
