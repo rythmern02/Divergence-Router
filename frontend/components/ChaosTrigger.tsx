@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertOctagon, ShieldCheck, RefreshCcw, Terminal, ArrowRight } from "lucide-react";
+import { AlertCircle, ShieldCheck, RefreshCcw, ArrowRight } from "lucide-react";
 import { sound } from "../lib/soundFx";
 
 export const ChaosTrigger: React.FC = () => {
@@ -23,39 +23,36 @@ export const ChaosTrigger: React.FC = () => {
       setIsSimulating(false);
       setRevertResult({
         reverted: true,
-        reason: "InsufficientFill(marketId, filled: 0, required: 100000000) -> Custom Revert",
-        collateralPreserved: "100.00 tUSDC (100% Retained, 0 Deducted)",
+        reason: "InsufficientFill(market, filled: 0, required: 1000000) -> Revert",
+        collateralPreserved: "100.00 tUSDC (100% Retained & Refunded)",
         stepDetails: [
-          "[Step 1] Leg A (BTC-15m UP) mint simulated on-chain -> filled 100%",
-          "[Step 2] Leg B (ETH-15m DOWN) encountered 0 bids on thin orderbook -> REVERT",
-          "[Step 3] EVM State Rollback unwound Leg A outcome tokens automatically",
-          "[Step 4] Full tUSDC principal refunded to caller in the same transaction block",
+          "Leg A (BTC-15m UP) mint executed on-chain",
+          "Leg B (ETH-15m DOWN) encountered 0 counterparty liquidity",
+          "EVM Transaction Reverted — Leg A outcome tokens unwound",
+          "Zero collateral deducted from user account",
         ],
       });
-    }, 1100);
+    }, 1000);
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-rose-500/30 bg-gradient-to-r from-rose-950/30 via-[#101422]/90 to-slate-950/80 backdrop-blur-xl p-5 shadow-2xl">
-      {/* Background hazard pulse */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
-
+    <div className="surface-panel rounded-2xl p-5 relative overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-3.5">
-          <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 shadow-lg shadow-rose-950/50">
-            <AlertOctagon className="h-5 w-5 animate-pulse" />
+          <div className="p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400">
+            <AlertCircle className="h-4 w-4" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h3 className="text-sm font-extrabold text-white tracking-tight">
+              <h3 className="text-sm font-semibold text-white tracking-tight">
                 Chaos Mode: Starved-Book Revert Simulator
               </h3>
-              <span className="text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded-full uppercase">
-                Judge Stress Test
+              <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-2 py-0.5 rounded">
+                EVM Verification
               </span>
             </div>
-            <p className="text-xs font-mono text-gray-400 mt-1 leading-relaxed">
-              Inject starved liquidity into Leg B to test on-chain failure handling. Proves 100% EVM state rollback.
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Simulate an atomic execution where Leg B lacks counterparty liquidity. Proves 100% EVM state rollback.
             </p>
           </div>
         </div>
@@ -64,46 +61,45 @@ export const ChaosTrigger: React.FC = () => {
           onClick={handleSimulateChaos}
           onMouseEnter={() => sound.playHover()}
           disabled={isSimulating}
-          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-mono font-bold text-xs shadow-lg shadow-rose-600/30 transition-all duration-200 active:scale-95 flex items-center justify-center space-x-2 whitespace-nowrap"
+          className="px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-zinc-200 font-mono text-xs transition active:scale-98 flex items-center justify-center space-x-2 whitespace-nowrap"
         >
           {isSimulating ? (
             <>
-              <RefreshCcw className="h-3.5 w-3.5 animate-spin" />
-              <span>Simulating Rollback...</span>
+              <RefreshCcw className="h-3 w-3 animate-spin text-zinc-400" />
+              <span>Simulating...</span>
             </>
           ) : (
             <>
-              <AlertOctagon className="h-3.5 w-3.5" />
-              <span>Simulate Starved Book</span>
+              <span>Simulate Revert</span>
             </>
           )}
         </button>
       </div>
 
       {revertResult && (
-        <div className="mt-4 bg-[#070a14]/95 border border-rose-500/40 rounded-xl p-4 text-xs font-mono shadow-2xl space-y-2.5 animate-in fade-in slide-in-from-top-2">
-          <div className="flex items-center justify-between border-b border-white/10 pb-2">
-            <div className="flex items-center space-x-2 text-emerald-400 font-bold">
+        <div className="mt-4 bg-black/40 border border-white/[0.08] rounded-xl p-4 text-xs font-mono space-y-2 animate-in fade-in">
+          <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
+            <div className="flex items-center space-x-2 text-emerald-400 font-medium">
               <ShieldCheck className="h-4 w-4" />
-              <span>ATOMIC SAFETY VERIFICATION PASSED (ZERO NAKED EXPOSURE)</span>
+              <span>ATOMIC INVARIANT VERIFIED &bull; ZERO NAKED EXPOSURE</span>
             </div>
-            <span className="text-[10px] text-gray-500">Block Execution Reverted</span>
+            <span className="text-[10px] text-zinc-500">Transaction Rolled Back</span>
           </div>
 
-          <div className="text-gray-300">
-            <span className="text-gray-500">Revert Trace: </span>
-            <span className="text-rose-400 font-bold">{revertResult.reason}</span>
+          <div className="text-zinc-300">
+            <span className="text-zinc-500">Revert Reason: </span>
+            <span className="text-rose-400">{revertResult.reason}</span>
           </div>
 
-          <div className="text-gray-300">
-            <span className="text-gray-500">User Collateral State: </span>
-            <span className="text-emerald-400 font-bold">{revertResult.collateralPreserved}</span>
+          <div className="text-zinc-300">
+            <span className="text-zinc-500">Collateral Status: </span>
+            <span className="text-emerald-400 font-medium">{revertResult.collateralPreserved}</span>
           </div>
 
-          <div className="pt-2 border-t border-white/5 space-y-1 text-[11px] text-gray-400">
+          <div className="pt-2 border-t border-white/[0.04] space-y-1 text-[11px] text-zinc-400">
             {revertResult.stepDetails.map((step, idx) => (
               <div key={idx} className="flex items-center space-x-1.5">
-                <ArrowRight className="w-3 h-3 text-cyan-400 flex-shrink-0" />
+                <ArrowRight className="w-3 h-3 text-zinc-600 flex-shrink-0" />
                 <span>{step}</span>
               </div>
             ))}

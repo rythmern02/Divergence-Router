@@ -2,7 +2,7 @@
 
 import React from "react";
 import { SplitStrategy } from "../lib/constants";
-import { Zap, Layers, Sparkles, ShieldCheck, Fuel } from "lucide-react";
+import { ShieldCheck, ArrowRight } from "lucide-react";
 import { sound } from "../lib/soundFx";
 
 interface ExecutionConsoleProps {
@@ -29,28 +29,22 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
   const totalCollateral = collateralPerLeg * 2;
 
   return (
-    <div className="glass-panel rounded-2xl p-6 shadow-2xl relative overflow-hidden space-y-5">
-      {/* Background ambient light */}
-      <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-
+    <div className="surface-panel rounded-2xl p-6 relative overflow-hidden space-y-5">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-extrabold text-white flex items-center space-x-2">
-          <div className="p-1.5 rounded-lg bg-indigo-500/20 text-cyan-400 border border-indigo-500/30">
-            <Zap className="h-4 w-4 fill-cyan-400" />
-          </div>
-          <span>1-Click Atomic Console</span>
+        <h3 className="text-sm font-semibold text-white tracking-tight flex items-center space-x-2">
+          <span>Execution Console</span>
         </h3>
-        <span className="text-[10px] font-mono text-emerald-300 bg-emerald-950/40 border border-emerald-500/30 px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+        <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-0.5 rounded flex items-center gap-1">
           <ShieldCheck className="w-3 h-3 text-emerald-400" />
-          Depth: 100% Pre-Flight
+          Pre-Flight Verified
         </span>
       </div>
 
       {/* Collateral Input */}
       <div>
-        <div className="flex justify-between text-xs text-gray-300 mb-2 font-mono">
-          <span className="font-semibold text-gray-400">Collateral Per Leg</span>
-          <span className="text-cyan-400 font-bold">Total: {totalCollateral} tUSDC</span>
+        <div className="flex justify-between text-xs text-zinc-400 mb-2 font-mono">
+          <span>Collateral Per Leg</span>
+          <span className="text-zinc-200 font-medium">Total: {totalCollateral} tUSDC</span>
         </div>
         <div className="relative">
           <input
@@ -59,15 +53,15 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
             max="5000"
             value={collateralPerLeg}
             onChange={(e) => setCollateralPerLeg(Math.max(1, Number(e.target.value)))}
-            className="w-full bg-[#080d1a] border border-white/10 focus:border-cyan-400 rounded-xl px-4 py-3 text-white font-mono text-base focus:outline-none focus:ring-2 focus:ring-cyan-500/30 shadow-inner"
+            className="w-full bg-black/40 border border-white/[0.08] focus:border-indigo-400/60 rounded-xl px-4 py-3 text-white font-mono text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400/30 tabular-nums"
           />
-          <span className="absolute right-4 top-3 text-xs text-cyan-400/80 font-mono font-bold">
+          <span className="absolute right-4 top-3 text-xs text-zinc-500 font-mono">
             tUSDC
           </span>
         </div>
 
         {/* Quick Size Presets */}
-        <div className="grid grid-cols-4 gap-2 mt-2.5">
+        <div className="grid grid-cols-4 gap-2 mt-2">
           {quickSizes.map((size) => (
             <button
               key={size}
@@ -76,10 +70,10 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
                 setCollateralPerLeg(size);
               }}
               onMouseEnter={() => sound.playHover()}
-              className={`py-1.5 rounded-xl text-xs font-mono transition-all duration-200 ${
+              className={`py-1.5 rounded-lg text-xs font-mono transition-all ${
                 collateralPerLeg === size
-                  ? "bg-gradient-to-r from-indigo-600 to-cyan-600 text-white font-bold shadow-md shadow-indigo-600/30 border border-cyan-400/40 scale-[1.02]"
-                  : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
+                  ? "bg-white/[0.12] text-white font-medium border border-white/[0.16]"
+                  : "bg-white/[0.03] text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-200 border border-white/[0.04]"
               }`}
             >
               {size}
@@ -90,10 +84,10 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
 
       {/* Slippage Settings */}
       <div>
-        <div className="flex justify-between text-xs text-gray-300 mb-2 font-mono">
-          <span className="font-semibold text-gray-400">Slippage Tolerance</span>
-          <span className="text-indigo-400 font-bold">
-            {(slippageTolerance * 100).toFixed(0)}% Revert Threshold
+        <div className="flex justify-between text-xs text-zinc-400 mb-2 font-mono">
+          <span>Slippage Tolerance</span>
+          <span className="text-zinc-300">
+            {(slippageTolerance * 100).toFixed(0)}% Revert Limit
           </span>
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -105,10 +99,10 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
                 setSlippageTolerance(slip);
               }}
               onMouseEnter={() => sound.playHover()}
-              className={`py-1.5 rounded-xl text-xs font-mono transition-all duration-200 ${
+              className={`py-1.5 rounded-lg text-xs font-mono transition-all ${
                 slippageTolerance === slip
-                  ? "bg-indigo-950/60 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm"
-                  : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
+                  ? "bg-white/[0.12] text-white font-medium border border-white/[0.16]"
+                  : "bg-white/[0.03] text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-200 border border-white/[0.04]"
               }`}
             >
               {(slip * 100).toFixed(0)}%
@@ -118,19 +112,15 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
       </div>
 
       {/* Execution Guarantee Box */}
-      <div className="bg-[#070b16]/90 border border-indigo-500/20 rounded-xl p-3.5 text-xs space-y-1.5 shadow-inner">
-        <div className="flex items-center justify-between text-indigo-300 font-mono font-bold">
-          <div className="flex items-center space-x-1.5">
-            <Layers className="h-3.5 w-3.5 text-cyan-400" />
-            <span>EVM All-Or-None Guarantee</span>
+      <div className="bg-black/30 border border-white/[0.05] rounded-xl p-3.5 text-xs space-y-1.5">
+        <div className="flex items-center justify-between text-zinc-300 font-mono text-[11px]">
+          <div className="flex items-center space-x-1.5 font-medium">
+            <span>EVM Atomic Guarantee</span>
           </div>
-          <div className="flex items-center space-x-1 text-emerald-400 text-[10px]">
-            <Fuel className="w-3 h-3" />
-            <span>Gas: &lt; 0.0001 STT</span>
-          </div>
+          <span className="text-zinc-500">Gas &lt; 0.0001 STT</span>
         </div>
-        <p className="text-[11px] font-mono text-gray-400 leading-relaxed">
-          Both legs mint in sequence inside one EVM transaction. If Leg B encounters insufficient depth or exceeds slippage tolerance, state rolls back automatically. Zero unhedged exposure.
+        <p className="text-[11px] font-mono text-zinc-400 leading-relaxed">
+          Both legs mint sequentially inside one EVM transaction. If Leg B exceeds slippage tolerance, the entire call reverts, refunding collateral.
         </p>
       </div>
 
@@ -142,11 +132,10 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
         }}
         onMouseEnter={() => sound.playHover()}
         disabled={disabled}
-        className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 via-cyan-600 to-emerald-500 hover:from-indigo-500 hover:via-cyan-500 hover:to-emerald-400 disabled:opacity-50 text-white font-extrabold font-mono text-xs shadow-xl shadow-cyan-500/25 transition-all duration-300 active:scale-98 flex items-center justify-center space-x-2 uppercase tracking-wider relative overflow-hidden group"
+        className="w-full py-3.5 rounded-xl bg-zinc-100 hover:bg-white disabled:opacity-40 text-zinc-950 font-medium text-xs shadow-md transition-all active:scale-98 flex items-center justify-center space-x-2"
       >
-        <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none" />
-        <Zap className="h-4 w-4 fill-white" />
-        <span>Review Payoff Matrix & Execute Split</span>
+        <span>Review Payoff &amp; Open Split</span>
+        <ArrowRight className="h-3.5 w-3.5 text-zinc-900" />
       </button>
     </div>
   );

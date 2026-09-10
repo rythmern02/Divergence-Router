@@ -2,7 +2,7 @@
 
 import React from "react";
 import { SplitStrategy } from "../lib/constants";
-import { Gauge, Sparkles, Zap, ArrowUpRight } from "lucide-react";
+import { Gauge, ArrowUpRight, Info } from "lucide-react";
 import { LiveSpreadChart } from "./LiveSpreadChart";
 
 interface SpreadDeltaMonitorProps {
@@ -14,100 +14,99 @@ export const SpreadDeltaMonitor: React.FC<SpreadDeltaMonitorProps> = ({ strategy
   const absDelta = Math.abs(delta);
 
   return (
-    <div className="glass-panel rounded-2xl p-6 shadow-2xl space-y-5 relative overflow-hidden">
+    <div className="surface-panel rounded-2xl p-6 space-y-5 relative overflow-hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
-            <Gauge className="h-4 w-4 animate-spin-slow" />
+          <div className="p-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] text-zinc-300">
+            <Gauge className="h-4 w-4" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-white tracking-tight">
-              Live Probability & Decorrelation Monitor
+            <h3 className="text-sm font-semibold text-white tracking-tight">
+              Probability &amp; Decorrelation Monitor
             </h3>
-            <p className="text-[11px] font-mono text-gray-400">
-              Sub-second pricing on DreamDEX CLOB orderbooks
+            <p className="text-[11px] font-mono text-zinc-400">
+              Live probability disparity derived from DreamDEX orderbook depth
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-1.5 text-[11px] font-mono text-cyan-300 bg-cyan-950/40 px-3 py-1 rounded-full border border-cyan-500/30 shadow-sm">
-          <Sparkles className="h-3 w-3 text-cyan-400" />
-          <span>Real-Time Divergence Δ</span>
+        <div className="text-[11px] font-mono text-zinc-400 bg-white/[0.04] px-2.5 py-1 rounded border border-white/[0.08]">
+          Spread &Delta;
         </div>
       </div>
 
       {/* Metrics Row */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="bg-[#080d1a]/80 p-3.5 rounded-xl border border-white/5 text-center">
-          <div className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">
+        <div className="bg-black/30 p-3.5 rounded-xl border border-white/[0.05] text-center">
+          <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
             Leg A Implied P(Up)
           </div>
-          <div className="text-xl font-extrabold font-mono text-emerald-400 mt-1">
+          <div className="text-lg font-semibold font-mono text-zinc-100 mt-1 tabular-nums">
             {(strategy.legA.impliedProb * 100).toFixed(1)}%
           </div>
-          <div className="text-[11px] font-mono text-gray-500 mt-0.5">{strategy.legA.name}</div>
+          <div className="text-[11px] font-mono text-zinc-400 mt-0.5">{strategy.legA.name}</div>
         </div>
 
-        <div className="bg-[#080d1a]/80 p-3.5 rounded-xl border border-white/5 text-center">
-          <div className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">
+        <div className="bg-black/30 p-3.5 rounded-xl border border-white/[0.05] text-center">
+          <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
             Leg B Implied P(Down)
           </div>
-          <div className="text-xl font-extrabold font-mono text-indigo-400 mt-1">
+          <div className="text-lg font-semibold font-mono text-zinc-100 mt-1 tabular-nums">
             {(strategy.legB.impliedProb * 100).toFixed(1)}%
           </div>
-          <div className="text-[11px] font-mono text-gray-500 mt-0.5">{strategy.legB.name}</div>
+          <div className="text-[11px] font-mono text-zinc-400 mt-0.5">{strategy.legB.name}</div>
         </div>
 
-        <div className="bg-[#080d1a]/80 p-3.5 rounded-xl border border-cyan-500/20 text-center relative overflow-hidden">
-          <div className="text-[10px] font-mono text-cyan-300 uppercase tracking-wider">
-            Decorrelation Spread (Δ)
+        <div className="bg-black/30 p-3.5 rounded-xl border border-white/[0.08] text-center">
+          <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
+            Net Divergence (&Delta;)
           </div>
-          <div className="text-xl font-extrabold font-mono text-cyan-400 mt-1 flex items-center justify-center gap-0.5">
-            <ArrowUpRight className="w-4 h-4 text-emerald-400" />
+          <div className="text-lg font-semibold font-mono text-emerald-400 mt-1 flex items-center justify-center gap-0.5 tabular-nums">
+            <ArrowUpRight className="w-3.5 h-3.5" />
             <span>+{absDelta.toFixed(1)}%</span>
           </div>
-          <div className="text-[11px] font-mono text-emerald-400 mt-0.5 font-semibold">
-            Alpha Capture Zone
+          <div className="text-[11px] font-mono text-zinc-500 mt-0.5">
+            Capture Premium
           </div>
         </div>
       </div>
 
-      {/* Embedded Live Chart */}
+      {/* Embedded Chart */}
       <LiveSpreadChart strategy={strategy} />
 
-      {/* Visual Spread Bar */}
-      <div className="pt-2 border-t border-white/5">
-        <div className="flex justify-between text-[11px] text-gray-400 mb-2 font-mono">
-          <span className="text-emerald-400 font-semibold">
+      {/* Visual Weight Bar */}
+      <div className="pt-2 border-t border-white/[0.05]">
+        <div className="flex justify-between text-[11px] text-zinc-400 mb-2 font-mono">
+          <span className="text-zinc-300">
             Leg A Weight: {(strategy.legA.impliedProb * 100).toFixed(0)}%
           </span>
-          <span className="text-cyan-300 font-bold">
-            Disparity Spread: {absDelta.toFixed(1)}%
+          <span className="text-zinc-400 font-medium">
+            Disparity: {absDelta.toFixed(1)}%
           </span>
-          <span className="text-indigo-400 font-semibold">
+          <span className="text-zinc-300">
             Leg B Weight: {(strategy.legB.impliedProb * 100).toFixed(0)}%
           </span>
         </div>
 
-        <div className="w-full bg-slate-900 rounded-full h-3 overflow-hidden flex p-0.5 border border-white/10">
+        <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex border border-white/[0.06]">
           <div
-            className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-l-full transition-all duration-500"
+            className="bg-zinc-400 h-full transition-all duration-300"
             style={{ width: `${strategy.legA.impliedProb * 50}%` }}
           />
           <div
-            className="bg-gradient-to-r from-cyan-400 to-indigo-500 h-full transition-all duration-500 animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.8)]"
+            className="bg-indigo-500 h-full transition-all duration-300"
             style={{ width: `${absDelta}%` }}
           />
           <div
-            className="bg-gradient-to-r from-indigo-500 to-purple-600 h-full rounded-r-full transition-all duration-500 ml-auto"
+            className="bg-zinc-600 h-full transition-all duration-300 ml-auto"
             style={{ width: `${strategy.legB.impliedProb * 50}%` }}
           />
         </div>
 
-        <div className="flex items-center space-x-2 text-[11px] font-mono text-gray-400 mt-3 bg-white/5 px-3 py-2 rounded-xl">
-          <Zap className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
+        <div className="flex items-start space-x-2 text-[11px] font-mono text-zinc-400 mt-3 bg-white/[0.02] border border-white/[0.04] px-3 py-2 rounded-lg">
+          <Info className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0 mt-0.5" />
           <span>
-            On Somnia, spread mispricings between 15m and 1h windows resolve in milliseconds. Sub-second execution captures this decorrelation premium before orderbooks normalize.
+            On Somnia, spread mispricings between 15m and 1h windows resolve in milliseconds. Sub-second block finality captures this decorrelation premium before orderbooks normalize.
           </span>
         </div>
       </div>

@@ -1,38 +1,31 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Sparkles, Eye, Radio, Orbit } from "lucide-react";
+import { Sliders, Check } from "lucide-react";
 import { sound } from "../lib/soundFx";
 
-interface BackgroundExperienceProps {
-  intensity?: "ambient" | "high";
-}
-
-const BG_PRESETS = [
+const BG_SCENES = [
   {
     id: "quantum-core",
-    name: "Quantum Core",
+    name: "Quantum Engine",
     src: "/assets/bg-quantum-core.jpg",
-    accent: "#6366f1", // indigo / purple
-    desc: "3D Torus Execution Engine",
+    desc: "3D Torus Execution Geometry",
   },
   {
     id: "divergence-mesh",
     name: "Divergence Mesh",
     src: "/assets/bg-divergence-mesh.jpg",
-    accent: "#10b981", // emerald / cyan
-    desc: "3D Probability Manifold",
+    desc: "3D Probability Vector Field",
   },
   {
     id: "speed-tunnel",
-    name: "Speed Tunnel",
+    name: "Speed Slipstream",
     src: "/assets/bg-speed-tunnel.jpg",
-    accent: "#06b6d4", // cyan / neon blue
-    desc: "Somnia Sub-Second Stream",
+    desc: "Sub-Second Network Conduit",
   },
 ];
 
-export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
+export const BackgroundExperience: React.FC = () => {
   const [activeIdx, setActiveIdx] = useState<number>(0);
   const [autoLoop, setAutoLoop] = useState<boolean>(true);
   const [particlesEnabled, setParticlesEnabled] = useState<boolean>(true);
@@ -40,16 +33,16 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mousePos = useRef<{ x: number; y: number }>({ x: -1000, y: -1000 });
 
-  // Auto-cycle through the 3D assets like a cinematic video loop
+  // Cinematic slow scene transition
   useEffect(() => {
     if (!autoLoop) return;
     const interval = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % BG_PRESETS.length);
-    }, 12000); // 12 seconds per cinematic loop
+      setActiveIdx((prev) => (prev + 1) % BG_SCENES.length);
+    }, 16000);
     return () => clearInterval(interval);
   }, [autoLoop]);
 
-  // Track mouse coordinates for reactive lighting and particle repulsion
+  // Track cursor for subtle ambient lighting
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
@@ -58,7 +51,7 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // WebGL / Canvas Cybernetic Particles & Quantum Grid Wave
+  // Canvas Micro-particle & Constellation Mesh
   useEffect(() => {
     if (!particlesEnabled) return;
     const canvas = canvasRef.current;
@@ -77,8 +70,7 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
     };
     window.addEventListener("resize", handleResize);
 
-    // Particle nodes
-    const particleCount = Math.min(65, Math.floor(width / 24));
+    const count = Math.min(50, Math.floor(width / 32));
     const particles: Array<{
       x: number;
       y: number;
@@ -86,20 +78,16 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
       vy: number;
       size: number;
       baseAlpha: number;
-      pulseSpeed: number;
-      pulseOffset: number;
     }> = [];
 
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        size: Math.random() * 2.2 + 1,
-        baseAlpha: Math.random() * 0.45 + 0.25,
-        pulseSpeed: Math.random() * 0.02 + 0.01,
-        pulseOffset: Math.random() * Math.PI * 2,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        size: Math.random() * 1.2 + 0.6,
+        baseAlpha: Math.random() * 0.2 + 0.1,
       });
     }
 
@@ -112,61 +100,38 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
       const mx = mousePos.current.x;
       const my = mousePos.current.y;
 
-      // Draw subtle dynamic perspective floor grid
-      ctx.strokeStyle = "rgba(99, 102, 241, 0.04)";
-      ctx.lineWidth = 1;
-      const gridSpacing = 64;
-      const gridOffset = (frame * 0.4) % gridSpacing;
-
-      // Draw horizontal scrolling grid lines
-      for (let y = gridOffset; y < height; y += gridSpacing) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-
-      // Render connected particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-
-        // Move
         p.x += p.vx;
         p.y += p.vy;
 
-        // Wrap boundaries
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        // Mouse avoidance/aura
+        // Subtle gentle cursor avoidance
         const dx = p.x - mx;
         const dy = p.y - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 140) {
-          const force = (140 - dist) / 140;
-          p.x += (dx / (dist || 1)) * force * 1.5;
-          p.y += (dy / (dist || 1)) * force * 1.5;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 120) {
+          const force = (120 - dist) / 120;
+          p.x += (dx / (dist || 1)) * force * 0.8;
+          p.y += (dy / (dist || 1)) * force * 0.8;
         }
 
-        // Pulse alpha
-        const alpha = p.baseAlpha + Math.sin(frame * p.pulseSpeed + p.pulseOffset) * 0.2;
-
-        // Particle circle
-        ctx.fillStyle = `rgba(167, 139, 250, ${Math.max(0.1, alpha)})`;
+        ctx.fillStyle = `rgba(226, 232, 240, ${p.baseAlpha})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Connect nearby particles
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const distNodes = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (distNodes < 110) {
-            const lineAlpha = (1 - distNodes / 110) * 0.18;
-            ctx.strokeStyle = `rgba(56, 189, 248, ${lineAlpha})`;
-            ctx.lineWidth = 0.8;
+          if (distNodes < 100) {
+            const lineAlpha = (1 - distNodes / 100) * 0.08;
+            ctx.strokeStyle = `rgba(148, 163, 184, ${lineAlpha})`;
+            ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
@@ -175,14 +140,13 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
         }
       }
 
-      // Cursor subtle glow
+      // Soft cursor illumination
       if (mx > 0 && my > 0) {
-        const radGrad = ctx.createRadialGradient(mx, my, 0, mx, my, 220);
-        radGrad.addColorStop(0, "rgba(99, 102, 241, 0.12)");
-        radGrad.addColorStop(0.5, "rgba(56, 189, 248, 0.04)");
-        radGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
-        ctx.fillStyle = radGrad;
-        ctx.fillRect(mx - 220, my - 220, 440, 440);
+        const grad = ctx.createRadialGradient(mx, my, 0, mx, my, 280);
+        grad.addColorStop(0, "rgba(99, 102, 241, 0.04)");
+        grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(mx - 280, my - 280, 560, 560);
       }
 
       animId = requestAnimationFrame(render);
@@ -198,23 +162,23 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
-      {/* 3D Visual Asset Loops (Cinematic Ken Burns Continuous Pan & Zoom) */}
+      {/* 3D Visual Asset Layer — Subtle, Atmospheric, Cinematic Depth */}
       <div className="absolute inset-0 w-full h-full">
-        {BG_PRESETS.map((preset, idx) => {
+        {BG_SCENES.map((scene, idx) => {
           const isActive = idx === activeIdx;
           return (
             <div
-              key={preset.id}
+              key={scene.id}
               className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                isActive ? "opacity-35" : "opacity-0"
+                isActive ? "opacity-20" : "opacity-0"
               }`}
             >
               <div
-                className={`w-full h-full bg-cover bg-center ${
+                className={`w-full h-full bg-cover bg-center filter grayscale-[35%] contrast-[110%] ${
                   isActive ? "animate-ken-burns" : ""
                 }`}
                 style={{
-                  backgroundImage: `url('${preset.src}')`,
+                  backgroundImage: `url('${scene.src}')`,
                 }}
               />
             </div>
@@ -222,89 +186,74 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
         })}
       </div>
 
-      {/* Deep Cybernetic Radial Vignette & Atmospheric Gradients */}
-      <div className="absolute inset-0 bg-radial-vignette mix-blend-multiply opacity-90" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#06080e]/90 via-[#090d16]/75 to-[#06080e]/95" />
+      {/* Deep Obsidian Gradients & Cinematic Vignette */}
+      <div className="absolute inset-0 bg-[#07090e]/85" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-90" />
 
-      {/* Cybernetic Particle and Network Mesh Canvas */}
+      {/* Fine Micro-Constellation Canvas */}
       {particlesEnabled && (
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full pointer-events-none opacity-80"
+          className="absolute inset-0 w-full h-full pointer-events-none"
         />
       )}
 
-      {/* Futuristic CRT Scanline & HUD Grain Overlay */}
-      <div className="absolute inset-0 bg-scanlines pointer-events-none opacity-40 mix-blend-overlay" />
-
-      {/* Tech HUD Corner Accents */}
-      <div className="absolute top-3 left-4 text-[10px] font-mono text-cyan-500/40 uppercase tracking-widest hidden md:flex items-center space-x-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-        <span>STREAM: SOMNIA 3D ENGINE • LATENCY 0.38s • 105k TPS</span>
-      </div>
-
-      <div className="absolute top-3 right-4 text-[10px] font-mono text-indigo-400/40 uppercase tracking-widest hidden md:flex items-center space-x-2">
-        <span>CURRENT SCENE: {BG_PRESETS[activeIdx].name.toUpperCase()}</span>
-        <span className="text-emerald-400">● LIVE</span>
-      </div>
-
-      {/* Floating 3D Background Controller Pill (Interactive) */}
+      {/* Floating 3D Background Controller — Minimalist Dock Style */}
       <div className="absolute bottom-6 right-6 pointer-events-auto z-40">
         <div className="relative">
           {showControls ? (
-            <div className="bg-[#0e1424]/95 border border-indigo-500/30 backdrop-blur-xl rounded-2xl p-4 shadow-2xl space-y-3 w-72 text-xs font-mono animate-in fade-in slide-in-from-bottom-2">
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <span className="text-indigo-300 font-bold flex items-center gap-1.5">
-                  <Orbit className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
-                  3D Background Engine
+            <div className="bg-[#0e1118]/95 border border-white/[0.1] backdrop-blur-2xl rounded-2xl p-4 shadow-2xl space-y-3 w-64 text-xs font-sans animate-in fade-in slide-in-from-bottom-2">
+              <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
+                <span className="text-zinc-200 font-medium text-xs">
+                  Cinematic Environment
                 </span>
                 <button
                   onClick={() => setShowControls(false)}
-                  className="text-gray-400 hover:text-white px-1"
+                  className="text-zinc-500 hover:text-white px-1"
                 >
-                  ✕
+                  &times;
                 </button>
               </div>
 
-              <div className="space-y-1.5">
-                {BG_PRESETS.map((p, idx) => (
+              <div className="space-y-1">
+                {BG_SCENES.map((scene, idx) => (
                   <button
-                    key={p.id}
+                    key={scene.id}
                     onClick={() => {
                       sound.playClick();
                       setActiveIdx(idx);
                       setAutoLoop(false);
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-xl transition flex items-center justify-between ${
+                    className={`w-full text-left px-2.5 py-2 rounded-lg transition-all flex items-center justify-between ${
                       activeIdx === idx
-                        ? "bg-indigo-600/30 text-white border border-indigo-500/50 shadow-sm"
-                        : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-200"
+                        ? "bg-white/[0.08] text-white border border-white/[0.12]"
+                        : "text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200"
                     }`}
                   >
                     <div>
-                      <div className="font-semibold">{p.name}</div>
-                      <div className="text-[10px] text-gray-500">{p.desc}</div>
+                      <div className="font-medium text-xs">{scene.name}</div>
+                      <div className="text-[10px] text-zinc-500">{scene.desc}</div>
                     </div>
                     {activeIdx === idx && (
-                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                      <Check className="w-3.5 h-3.5 text-zinc-300" />
                     )}
                   </button>
                 ))}
               </div>
 
-              <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px]">
+              <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono">
                 <button
                   onClick={() => {
                     sound.playClick();
                     setAutoLoop((prev) => !prev);
                   }}
-                  className={`px-2.5 py-1 rounded-lg border transition ${
+                  className={`px-2 py-1 rounded border transition ${
                     autoLoop
-                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
-                      : "bg-white/5 text-gray-400 border-white/10"
+                      ? "bg-white/[0.08] text-zinc-200 border-white/[0.14]"
+                      : "text-zinc-500 border-transparent hover:text-zinc-300"
                   }`}
                 >
-                  Auto-Loop: {autoLoop ? "ON" : "PAUSED"}
+                  Loop: {autoLoop ? "Auto" : "Manual"}
                 </button>
 
                 <button
@@ -312,13 +261,13 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
                     sound.playClick();
                     setParticlesEnabled((prev) => !prev);
                   }}
-                  className={`px-2.5 py-1 rounded-lg border transition ${
+                  className={`px-2 py-1 rounded border transition ${
                     particlesEnabled
-                      ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
-                      : "bg-white/5 text-gray-400 border-white/10"
+                      ? "bg-white/[0.08] text-zinc-200 border-white/[0.14]"
+                      : "text-zinc-500 border-transparent hover:text-zinc-300"
                   }`}
                 >
-                  Particles: {particlesEnabled ? "ON" : "OFF"}
+                  Particles: {particlesEnabled ? "On" : "Off"}
                 </button>
               </div>
             </div>
@@ -329,12 +278,10 @@ export const BackgroundExperience: React.FC<BackgroundExperienceProps> = () => {
                 setShowControls(true);
               }}
               onMouseEnter={() => sound.playHover()}
-              className="group bg-[#0e1424]/80 hover:bg-indigo-950/90 border border-indigo-500/30 hover:border-cyan-400/60 backdrop-blur-md text-xs font-mono text-gray-300 hover:text-white px-3.5 py-2 rounded-full shadow-lg transition-all duration-300 flex items-center space-x-2"
-              title="Change 3D Asset Loop"
+              className="bg-[#0e1118]/80 hover:bg-[#151924] border border-white/[0.08] hover:border-white/[0.16] backdrop-blur-xl text-xs text-zinc-400 hover:text-zinc-200 px-3.5 py-1.5 rounded-full shadow-lg transition-all duration-200 flex items-center space-x-2 font-mono"
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400 group-hover:rotate-12 transition-transform" />
-              <span>3D Motion: {BG_PRESETS[activeIdx].name}</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <Sliders className="w-3 h-3 text-zinc-400" />
+              <span>Scene: {BG_SCENES[activeIdx].name}</span>
             </button>
           )}
         </div>

@@ -12,10 +12,9 @@ import { ActivePositions, PositionRecord } from "../components/ActivePositions";
 import { ChaosTrigger } from "../components/ChaosTrigger";
 import { PRESET_STRATEGIES, SplitStrategy, CONTRACT_ADDRESSES, EXPLORER_URL } from "../lib/constants";
 import { sound } from "../lib/soundFx";
-import { ExternalLink, Sparkles, Shield, Zap, Layers } from "lucide-react";
+import { ExternalLink, ShieldCheck } from "lucide-react";
 
 export default function Home() {
-  // Real Somnia Shannon Testnet address provided by user with live STT & tUSDC
   const [userAddress, setUserAddress] = useState<string | null>("0x18AF72239dD6a52426e4dd9509C6515Df06477E4");
   const [collateralBalance, setCollateralBalance] = useState<number>(498);
   const [selectedStrategy, setSelectedStrategy] = useState<SplitStrategy>(PRESET_STRATEGIES[0]);
@@ -25,7 +24,6 @@ export default function Home() {
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
   const [isRedeeming, setIsRedeeming] = useState<boolean>(false);
 
-  // Position 1 contains the real on-chain verified transaction from Somnia testnet
   const [positions, setPositions] = useState<PositionRecord[]>([
     {
       id: 1,
@@ -53,10 +51,8 @@ export default function Home() {
       setIsExecuting(false);
       setIsReviewOpen(false);
 
-      // Deduct balance
       setCollateralBalance((prev) => Math.max(0, prev - totalRequired));
 
-      // Append new active position
       const newPos: PositionRecord = {
         id: positions.length + 1,
         title: selectedStrategy.title,
@@ -65,11 +61,11 @@ export default function Home() {
         collateralTotal: totalRequired,
         status: "ACTIVE",
         payout: 0,
-        createdAt: "Just now (Pending Settlement)",
+        createdAt: "Pending Settlement",
       };
 
       setPositions([newPos, ...positions]);
-    }, 1400);
+    }, 1200);
   };
 
   const handleRedeem = (id: number) => {
@@ -87,92 +83,80 @@ export default function Home() {
           return p;
         })
       );
-    }, 900);
+    }, 800);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#050811] text-slate-100 relative selection:bg-cyan-500 selection:text-black">
-      {/* 3D Video-Like Continuous Motion Background & Particle Grid Engine */}
+    <div className="min-h-screen flex flex-col bg-[#07090e] text-zinc-100 relative selection:bg-zinc-700 selection:text-white">
+      {/* 3D Atmospheric Background Layer */}
       <BackgroundExperience />
 
-      {/* Top Real-Time Somnia Sub-Second Block & TPS HUD */}
+      {/* Top Telemetry Header */}
       <SomniaHUD />
 
-      {/* Primary Navigation */}
+      {/* Navigation */}
       <Navbar
         userAddress={userAddress}
         onConnect={handleConnect}
         collateralBalance={collateralBalance}
       />
 
-      {/* Main Terminal Stage */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-7 relative z-10">
-        {/* Futuristic Hero Banner with 3D Cyberpunk Aesthetic */}
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl border border-white/10 group">
-          {/* Ambient Corner Glows */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-cyan-500/15 via-indigo-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-purple-600/15 to-transparent rounded-full blur-2xl pointer-events-none" />
-
-          <div className="max-w-4xl relative z-10 space-y-4">
-            <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 text-cyan-300 border border-cyan-500/30 px-3.5 py-1.5 rounded-full shadow-inner">
-              <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
-              <span>Somnia × DreamDEX Hackathon</span>
-              <span className="text-gray-500">•</span>
-              <span className="text-emerald-400 font-extrabold">Live On-Chain Engine</span>
+      {/* Main Terminal Grid */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-6 relative z-10">
+        {/* Minimalist Hero Section */}
+        <div className="surface-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+          <div className="max-w-3xl space-y-3">
+            <div className="inline-flex items-center space-x-2 text-xs font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-3 py-1 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>Somnia Shannon Testnet &bull; Chain 50312</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-              Trade The Spread.{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400">
-                Not The Coin Flip.
-              </span>
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight leading-tight">
+              Trade The Spread. <span className="text-zinc-400 font-normal">Not The Coin Flip.</span>
             </h1>
 
-            <p className="text-xs sm:text-sm text-gray-300 max-w-3xl leading-relaxed font-mono">
-              Divergence Router takes structured two-leg positions across live DreamDEX Event Contracts. 
-              Express relative-value views across <strong className="text-cyan-400">Asset</strong> (BTC/ETH) and{" "}
-              <strong className="text-indigo-400">Cadence</strong> (15m/1h) dimensions with 100% EVM atomic fill guarantees. Zero legging-in risk.
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-2xl font-sans">
+              Divergence Router executes structured two-leg positions across live DreamDEX Event Contracts. 
+              Express relative-value views across Asset (BTC/ETH) and Cadence (15m/1h) dimensions with EVM atomic guarantees. Zero naked exposure.
             </p>
 
-            {/* Quick Proof Badges */}
-            <div className="flex flex-wrap gap-2.5 pt-2 text-[11px] font-mono">
+            {/* Verifiable On-Chain Proof References */}
+            <div className="flex flex-wrap gap-2 pt-2 text-[11px] font-mono">
               <a
                 href={`${EXPLORER_URL}/address/${CONTRACT_ADDRESSES.divergenceRouter}`}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/40 text-gray-300 transition-colors"
+                className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] text-zinc-300 transition-colors"
               >
-                <Shield className="w-3.5 h-3.5 text-cyan-400" />
+                <ShieldCheck className="w-3.5 h-3.5 text-zinc-400" />
                 <span>Router: {CONTRACT_ADDRESSES.divergenceRouter.slice(0, 6)}...{CONTRACT_ADDRESSES.divergenceRouter.slice(-4)}</span>
-                <ExternalLink className="w-2.5 h-2.5 text-gray-500" />
+                <ExternalLink className="w-2.5 h-2.5 text-zinc-500" />
               </a>
 
               <a
                 href={`${EXPLORER_URL}/tx/0xdfed824dd162cb10517c5faa5a972fc2f00455e34e5eb32bdca7c03f72f3dc53`}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-emerald-300 transition-colors"
+                className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] text-zinc-300 transition-colors"
               >
-                <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Live Proof Split Tx (#484845474)</span>
-                <ExternalLink className="w-2.5 h-2.5 text-emerald-500" />
+                <span>Proof Split Tx (#484845474)</span>
+                <ExternalLink className="w-2.5 h-2.5 text-zinc-500" />
               </a>
 
               <a
                 href={`${EXPLORER_URL}/tx/0x12412c7b107249aefb8114435762db9302ec45452e81a9e1b07ee1dee632c632`}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-500/30 text-indigo-300 transition-colors"
+                className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] text-zinc-300 transition-colors"
               >
-                <Layers className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Live Proof Redeem Tx (#484847020)</span>
-                <ExternalLink className="w-2.5 h-2.5 text-indigo-400" />
+                <span>Proof Redeem Tx (#484847020)</span>
+                <ExternalLink className="w-2.5 h-2.5 text-zinc-500" />
               </a>
             </div>
           </div>
         </div>
 
-        {/* Strategy Matrix & Spread Monitor Grid */}
+        {/* Core Strategy Selector & Real-Time Spread Monitor */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <MarketMatrixSelector
@@ -198,10 +182,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Chaos Mode Revert Simulator (Money Shot) */}
+        {/* Chaos Mode Revert Simulation Card */}
         <ChaosTrigger />
 
-        {/* Active Positions & Settlement Claims */}
+        {/* Active Positions Ledger & Redemption Claims */}
         <ActivePositions
           positions={positions}
           onRedeem={handleRedeem}
@@ -209,7 +193,7 @@ export default function Home() {
         />
       </main>
 
-      {/* 4-Quadrant Payoff Modal */}
+      {/* Pre-Flight Payoff Matrix Modal */}
       <PayoffMatrixModal
         isOpen={isReviewOpen}
         onClose={() => setIsReviewOpen(false)}
@@ -220,15 +204,15 @@ export default function Home() {
         isLoading={isExecuting}
       />
 
-      {/* High-Tech Terminal Footer */}
-      <footer className="border-t border-white/10 bg-[#050811]/90 backdrop-blur-xl py-6 px-6 relative z-10 text-center text-xs text-gray-500 font-mono">
+      {/* Terminal Footer */}
+      <footer className="border-t border-white/[0.06] bg-[#07090e] py-6 px-6 relative z-10 text-xs text-zinc-500 font-mono">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center space-x-2 text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Divergence Router • Somnia Shannon Chain 50312 • DreamDEX CLOB</span>
+          <div className="flex items-center space-x-2 text-zinc-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>Divergence Router &bull; Somnia Shannon Testnet &bull; DreamDEX CLOB</span>
           </div>
-          <div className="text-gray-500 text-[11px]">
-            Zero Naked Exposure • 1-Click EVM Atomicity • Built for the Somnia × DreamDEX Hackathon
+          <div className="text-zinc-500 text-[11px]">
+            1-Click EVM Atomicity &bull; Built for Somnia &times; DreamDEX Hackathon
           </div>
         </div>
       </footer>
