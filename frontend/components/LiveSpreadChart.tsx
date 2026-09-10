@@ -47,15 +47,15 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
     <div className="bg-black/25 border border-white/[0.06] rounded-xl p-4 relative overflow-hidden">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
-          <Activity className="w-3.5 h-3.5 text-indigo-400" />
+          <Activity className="w-3.5 h-3.5 text-zinc-300" />
           <span className="text-xs font-mono font-medium text-zinc-300 uppercase tracking-wider">
             Decorrelation Spread &bull; 15m Cadence
           </span>
         </div>
 
         <div className="text-right">
-          <div className="text-sm font-mono font-semibold text-zinc-100 flex items-center justify-end gap-1 tabular-nums">
-            <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="text-sm font-mono font-semibold text-white flex items-center justify-end gap-1 tabular-nums">
+            <TrendingUp className="w-3.5 h-3.5 text-white" />
             <span>+{mounted ? tickerDelta.toFixed(2) : "18.00"}%</span>
           </div>
         </div>
@@ -70,8 +70,8 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
         >
           <defs>
             <linearGradient id="spreadAreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#818cf8" stopOpacity="0.16" />
-              <stop offset="100%" stopColor="#818cf8" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -81,7 +81,7 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
           {/* Stroke */}
           <polyline
             fill="none"
-            stroke="#818cf8"
+            stroke="#f1f5f9"
             strokeWidth="1.75"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -94,7 +94,7 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
               cx={width}
               cy={height - ((tickerDelta - minVal) / range) * (height - 16) - 8}
               r="3"
-              fill="#818cf8"
+              fill="#ffffff"
             />
           )}
         </svg>

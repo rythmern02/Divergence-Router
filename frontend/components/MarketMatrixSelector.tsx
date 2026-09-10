@@ -51,9 +51,9 @@ export const MarketMatrixSelector: React.FC<MarketMatrixSelectorProps> = ({
             >
               {/* Selected badge */}
               {isSelected && (
-                <div className="absolute top-4 right-4 flex items-center gap-1 text-[11px] font-mono text-indigo-300">
-                  <div className="w-4 h-4 rounded-full bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center">
-                    <Check className="w-2.5 h-2.5 text-indigo-300" />
+                <div className="absolute top-4 right-4 flex items-center gap-1 text-[11px] font-mono text-zinc-200">
+                  <div className="w-4 h-4 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                    <Check className="w-2.5 h-2.5 text-white" />
                   </div>
                 </div>
               )}
@@ -71,7 +71,7 @@ export const MarketMatrixSelector: React.FC<MarketMatrixSelectorProps> = ({
                   <div className="text-xs font-mono font-medium uppercase tracking-wider text-zinc-300">
                     {isCrossAsset ? "Cross-Asset Spread" : "Calendar Term Structure"}
                   </div>
-                  <div className="text-[11px] font-mono text-emerald-400 font-medium">
+                  <div className="text-[11px] font-mono text-zinc-300 font-medium">
                     {strat.decorrelationFactor}
                   </div>
                 </div>
@@ -86,10 +86,10 @@ export const MarketMatrixSelector: React.FC<MarketMatrixSelectorProps> = ({
                 <div className="bg-black/30 p-2.5 rounded-lg border border-white/[0.04]">
                   <div className="text-[10px] font-mono text-zinc-500 flex items-center justify-between">
                     <span>LEG A ({strat.legA.cadence})</span>
-                    <TrendingUp className="h-3 w-3 text-emerald-400" />
+                    <TrendingUp className="h-3 w-3 text-zinc-300" />
                   </div>
                   <div className="font-medium text-zinc-200 mt-1 text-xs">{strat.legA.name}</div>
-                  <div className="text-[11px] font-mono text-emerald-400/90 mt-0.5 tabular-nums">
+                  <div className="text-[11px] font-mono text-zinc-300 mt-0.5 tabular-nums">
                     P(Up): {(strat.legA.impliedProb * 100).toFixed(0)}%
                   </div>
                 </div>
@@ -97,10 +97,10 @@ export const MarketMatrixSelector: React.FC<MarketMatrixSelectorProps> = ({
                 <div className="bg-black/30 p-2.5 rounded-lg border border-white/[0.04]">
                   <div className="text-[10px] font-mono text-zinc-500 flex items-center justify-between">
                     <span>LEG B ({strat.legB.cadence})</span>
-                    <TrendingDown className="h-3 w-3 text-rose-400" />
+                    <TrendingDown className="h-3 w-3 text-zinc-400" />
                   </div>
                   <div className="font-medium text-zinc-200 mt-1 text-xs">{strat.legB.name}</div>
-                  <div className="text-[11px] font-mono text-rose-400/90 mt-0.5 tabular-nums">
+                  <div className="text-[11px] font-mono text-zinc-400 mt-0.5 tabular-nums">
                     P(Down): {(strat.legB.impliedProb * 100).toFixed(0)}%
                   </div>
                 </div>

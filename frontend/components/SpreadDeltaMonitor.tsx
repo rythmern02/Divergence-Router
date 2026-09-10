@@ -61,11 +61,11 @@ export const SpreadDeltaMonitor: React.FC<SpreadDeltaMonitorProps> = ({ strategy
           <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
             Net Divergence (&Delta;)
           </div>
-          <div className="text-lg font-semibold font-mono text-emerald-400 mt-1 flex items-center justify-center gap-0.5 tabular-nums">
-            <ArrowUpRight className="w-3.5 h-3.5" />
+          <div className="text-lg font-semibold font-mono text-white mt-1 flex items-center justify-center gap-0.5 tabular-nums">
+            <ArrowUpRight className="w-3.5 h-3.5 text-zinc-300" />
             <span>+{absDelta.toFixed(1)}%</span>
           </div>
-          <div className="text-[11px] font-mono text-zinc-500 mt-0.5">
+          <div className="text-[11px] font-mono text-zinc-400 mt-0.5">
             Capture Premium
           </div>
         </div>
@@ -80,7 +80,7 @@ export const SpreadDeltaMonitor: React.FC<SpreadDeltaMonitorProps> = ({ strategy
           <span className="text-zinc-300">
             Leg A Weight: {(strategy.legA.impliedProb * 100).toFixed(0)}%
           </span>
-          <span className="text-zinc-400 font-medium">
+          <span className="text-white font-medium">
             Disparity: {absDelta.toFixed(1)}%
           </span>
           <span className="text-zinc-300">
@@ -94,7 +94,7 @@ export const SpreadDeltaMonitor: React.FC<SpreadDeltaMonitorProps> = ({ strategy
             style={{ width: `${strategy.legA.impliedProb * 50}%` }}
           />
           <div
-            className="bg-indigo-500 h-full transition-all duration-300"
+            className="bg-white h-full transition-all duration-300"
             style={{ width: `${absDelta}%` }}
           />
           <div

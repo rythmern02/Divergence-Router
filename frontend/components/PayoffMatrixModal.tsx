@@ -81,23 +81,23 @@ export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
             </thead>
             <tbody className="divide-y divide-white/[0.04] font-mono text-xs">
               {/* Row 1: Target Win */}
-              <tr className="bg-emerald-950/25">
-                <td className="px-3.5 py-2.5 font-medium text-emerald-400">UP (Win)</td>
-                <td className="px-3.5 py-2.5 font-medium text-emerald-400">DOWN (Win)</td>
-                <td className="px-3.5 py-2.5 text-right font-medium text-emerald-400 tabular-nums">
+              <tr className="bg-white/[0.06]">
+                <td className="px-3.5 py-2.5 font-medium text-white">UP (Win)</td>
+                <td className="px-3.5 py-2.5 font-medium text-white">DOWN (Win)</td>
+                <td className="px-3.5 py-2.5 text-right font-semibold text-white tabular-nums">
                   {maxWinPayout} tUSDC
                 </td>
-                <td className="px-3.5 py-2.5 text-right text-emerald-400 font-medium">
+                <td className="px-3.5 py-2.5 text-right text-white font-semibold">
                   +100% (2x)
                 </td>
               </tr>
 
               {/* Row 2: Reverse Fail */}
-              <tr className="bg-rose-950/20">
-                <td className="px-3.5 py-2.5 text-rose-400">DOWN (Loss)</td>
-                <td className="px-3.5 py-2.5 text-rose-400">UP (Loss)</td>
-                <td className="px-3.5 py-2.5 text-right text-rose-400 tabular-nums">0 tUSDC</td>
-                <td className="px-3.5 py-2.5 text-right text-rose-400">-100% (0x)</td>
+              <tr className="bg-black/30">
+                <td className="px-3.5 py-2.5 text-zinc-400">DOWN (Loss)</td>
+                <td className="px-3.5 py-2.5 text-zinc-400">UP (Loss)</td>
+                <td className="px-3.5 py-2.5 text-right text-zinc-400 tabular-nums">0 tUSDC</td>
+                <td className="px-3.5 py-2.5 text-right text-zinc-400">-100% (0x)</td>
               </tr>
 
               {/* Row 3: Macro Co-Pump */}

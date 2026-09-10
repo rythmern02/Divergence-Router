@@ -30,8 +30,8 @@ export const SomniaHUD: React.FC = () => {
         <div className="flex items-center space-x-5">
           <div className="flex items-center space-x-2">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-zinc-200" />
             </span>
             <span className="font-semibold text-zinc-200 tracking-tight">SOMNIA SHANNON</span>
             <span className="text-[10px] text-zinc-400 bg-white/[0.05] border border-white/[0.08] px-1.5 py-0.5 rounded">
@@ -53,7 +53,7 @@ export const SomniaHUD: React.FC = () => {
             <span className="text-zinc-200 font-medium tabular-nums">
               {mounted ? formatCommas(tps) : "104,890"} TPS
             </span>
-            <span className="text-[10px] text-emerald-400 font-medium">(&sim;380ms finality)</span>
+            <span className="text-[10px] text-zinc-400 font-medium">(&sim;380ms finality)</span>
           </div>
         </div>
 
@@ -74,7 +74,7 @@ export const SomniaHUD: React.FC = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-2 text-zinc-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
             <span className="text-zinc-500">EVM Atomic Invariant:</span>
             <span className="text-zinc-200 font-medium">Zero Legging-In Risk</span>
           </div>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #080a0f;
+  --background: #040507;
   --foreground: #f4f4f5;
 }
 
@@ -22,7 +22,7 @@ body {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090b10;
+  background: #060709;
 }
 ::-webkit-scrollbar-thumb {
   background: #27272a;
@@ -52,39 +52,39 @@ body {
 
 /* Radial Dark Vignette */
 .bg-radial-vignette {
-  background: radial-gradient(circle at 50% 30%, transparent 20%, rgba(8, 10, 15, 0.95) 85%);
+  background: radial-gradient(circle at 50% 30%, transparent 20%, rgba(4, 5, 7, 0.96) 85%);
 }
 
-/* Swiss / Linear Dark Surfaces */
+/* Swiss / Linear Titanium & Obsidian Surfaces */
 .surface-panel {
-  background: rgba(15, 18, 26, 0.7);
+  background: rgba(14, 16, 22, 0.72);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
 }
 
 .surface-panel-interactive {
-  background: rgba(18, 22, 32, 0.6);
+  background: rgba(16, 18, 25, 0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .surface-panel-interactive:hover {
-  background: rgba(22, 28, 42, 0.8);
-  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(22, 26, 36, 0.85);
+  border-color: rgba(255, 255, 255, 0.16);
   transform: translateY(-1px);
 }
 
 .surface-panel-active {
-  background: rgba(24, 30, 48, 0.85);
+  background: rgba(24, 28, 38, 0.9);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(129, 140, 248, 0.4);
-  box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 44px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
 }
 
 /* Numeric alignment */

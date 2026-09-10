@@ -35,7 +35,7 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
           <span>Execution Console</span>
         </h3>
         <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-0.5 rounded flex items-center gap-1">
-          <ShieldCheck className="w-3 h-3 text-emerald-400" />
+          <ShieldCheck className="w-3 h-3 text-zinc-300" />
           Pre-Flight Verified
         </span>
       </div>

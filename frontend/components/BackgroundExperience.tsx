@@ -6,22 +6,22 @@ import { sound } from "../lib/soundFx";
 
 const BG_SCENES = [
   {
-    id: "quantum-core",
-    name: "Quantum Engine",
-    src: "/assets/bg-quantum-core.jpg",
-    desc: "3D Torus Execution Geometry",
+    id: "titanium-core",
+    name: "Titanium Monoliths",
+    src: "/assets/bg-titanium-core.jpg",
+    desc: "Brushed Titanium Architectural Geometry",
   },
   {
-    id: "divergence-mesh",
-    name: "Divergence Mesh",
-    src: "/assets/bg-divergence-mesh.jpg",
-    desc: "3D Probability Vector Field",
+    id: "chrome-vectors",
+    name: "Liquid Chrome Vectors",
+    src: "/assets/bg-chrome-vectors.jpg",
+    desc: "Polished Silver Divergence Streams",
   },
   {
-    id: "speed-tunnel",
-    name: "Speed Slipstream",
-    src: "/assets/bg-speed-tunnel.jpg",
-    desc: "Sub-Second Network Conduit",
+    id: "monochrome-stream",
+    name: "Steel Slipstream",
+    src: "/assets/bg-monochrome-stream.jpg",
+    desc: "Sub-Second Infinite Vanishing Point",
   },
 ];
 
@@ -38,11 +38,11 @@ export const BackgroundExperience: React.FC = () => {
     if (!autoLoop) return;
     const interval = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % BG_SCENES.length);
-    }, 16000);
+    }, 18000);
     return () => clearInterval(interval);
   }, [autoLoop]);
 
-  // Track cursor for subtle ambient lighting
+  // Track cursor for subtle ambient specular lighting
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
@@ -51,7 +51,7 @@ export const BackgroundExperience: React.FC = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Canvas Micro-particle & Constellation Mesh
+  // Pure Monochrome Stardust Canvas
   useEffect(() => {
     if (!particlesEnabled) return;
     const canvas = canvasRef.current;
@@ -70,7 +70,7 @@ export const BackgroundExperience: React.FC = () => {
     };
     window.addEventListener("resize", handleResize);
 
-    const count = Math.min(50, Math.floor(width / 32));
+    const count = Math.min(45, Math.floor(width / 36));
     const particles: Array<{
       x: number;
       y: number;
@@ -84,10 +84,10 @@ export const BackgroundExperience: React.FC = () => {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        size: Math.random() * 1.2 + 0.6,
-        baseAlpha: Math.random() * 0.2 + 0.1,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        size: Math.random() * 1.0 + 0.5,
+        baseAlpha: Math.random() * 0.2 + 0.08,
       });
     }
 
@@ -110,17 +110,16 @@ export const BackgroundExperience: React.FC = () => {
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        // Subtle gentle cursor avoidance
         const dx = p.x - mx;
         const dy = p.y - my;
         const dist = Math.hypot(dx, dy);
-        if (dist < 120) {
-          const force = (120 - dist) / 120;
-          p.x += (dx / (dist || 1)) * force * 0.8;
-          p.y += (dy / (dist || 1)) * force * 0.8;
+        if (dist < 130) {
+          const force = (130 - dist) / 130;
+          p.x += (dx / (dist || 1)) * force * 0.7;
+          p.y += (dy / (dist || 1)) * force * 0.7;
         }
 
-        ctx.fillStyle = `rgba(226, 232, 240, ${p.baseAlpha})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.baseAlpha})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
@@ -128,9 +127,9 @@ export const BackgroundExperience: React.FC = () => {
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const distNodes = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (distNodes < 100) {
-            const lineAlpha = (1 - distNodes / 100) * 0.08;
-            ctx.strokeStyle = `rgba(148, 163, 184, ${lineAlpha})`;
+          if (distNodes < 90) {
+            const lineAlpha = (1 - distNodes / 90) * 0.06;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -140,13 +139,13 @@ export const BackgroundExperience: React.FC = () => {
         }
       }
 
-      // Soft cursor illumination
+      // Pure white/silver specular lighting reflecting off cursor
       if (mx > 0 && my > 0) {
-        const grad = ctx.createRadialGradient(mx, my, 0, mx, my, 280);
-        grad.addColorStop(0, "rgba(99, 102, 241, 0.04)");
+        const grad = ctx.createRadialGradient(mx, my, 0, mx, my, 260);
+        grad.addColorStop(0, "rgba(255, 255, 255, 0.035)");
         grad.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.fillStyle = grad;
-        ctx.fillRect(mx - 280, my - 280, 560, 560);
+        ctx.fillRect(mx - 260, my - 260, 520, 520);
       }
 
       animId = requestAnimationFrame(render);
@@ -161,8 +160,8 @@ export const BackgroundExperience: React.FC = () => {
   }, [particlesEnabled]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
-      {/* 3D Visual Asset Layer — Subtle, Atmospheric, Cinematic Depth */}
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-black">
+      {/* 3D Visual Asset Layer — Matching Exact Logo Titanium & Chrome Palette */}
       <div className="absolute inset-0 w-full h-full">
         {BG_SCENES.map((scene, idx) => {
           const isActive = idx === activeIdx;
@@ -170,11 +169,11 @@ export const BackgroundExperience: React.FC = () => {
             <div
               key={scene.id}
               className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                isActive ? "opacity-20" : "opacity-0"
+                isActive ? "opacity-25" : "opacity-0"
               }`}
             >
               <div
-                className={`w-full h-full bg-cover bg-center filter grayscale-[35%] contrast-[110%] ${
+                className={`w-full h-full bg-cover bg-center ${
                   isActive ? "animate-ken-burns" : ""
                 }`}
                 style={{
@@ -186,11 +185,11 @@ export const BackgroundExperience: React.FC = () => {
         })}
       </div>
 
-      {/* Deep Obsidian Gradients & Cinematic Vignette */}
-      <div className="absolute inset-0 bg-[#07090e]/85" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-90" />
+      {/* Pure Obsidian Black Vignette Mask */}
+      <div className="absolute inset-0 bg-black/75" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-95" />
 
-      {/* Fine Micro-Constellation Canvas */}
+      {/* Fine Monochrome Micro-Constellation Canvas */}
       {particlesEnabled && (
         <canvas
           ref={canvasRef}
@@ -198,14 +197,14 @@ export const BackgroundExperience: React.FC = () => {
         />
       )}
 
-      {/* Floating 3D Background Controller — Minimalist Dock Style */}
+      {/* Floating 3D Background Controller — Brushed Titanium Dock Style */}
       <div className="absolute bottom-6 right-6 pointer-events-auto z-40">
         <div className="relative">
           {showControls ? (
-            <div className="bg-[#0e1118]/95 border border-white/[0.1] backdrop-blur-2xl rounded-2xl p-4 shadow-2xl space-y-3 w-64 text-xs font-sans animate-in fade-in slide-in-from-bottom-2">
-              <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
+            <div className="bg-[#0a0a0c]/95 border border-white/[0.12] backdrop-blur-2xl rounded-2xl p-4 shadow-2xl space-y-3 w-64 text-xs font-mono animate-in fade-in slide-in-from-bottom-2">
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
                 <span className="text-zinc-200 font-medium text-xs">
-                  Cinematic Environment
+                  Titanium 3D Environment
                 </span>
                 <button
                   onClick={() => setShowControls(false)}
@@ -226,7 +225,7 @@ export const BackgroundExperience: React.FC = () => {
                     }}
                     className={`w-full text-left px-2.5 py-2 rounded-lg transition-all flex items-center justify-between ${
                       activeIdx === idx
-                        ? "bg-white/[0.08] text-white border border-white/[0.12]"
+                        ? "bg-white/[0.12] text-white border border-white/[0.18]"
                         : "text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200"
                     }`}
                   >
@@ -241,7 +240,7 @@ export const BackgroundExperience: React.FC = () => {
                 ))}
               </div>
 
-              <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono">
+              <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-[11px] font-mono">
                 <button
                   onClick={() => {
                     sound.playClick();
@@ -249,7 +248,7 @@ export const BackgroundExperience: React.FC = () => {
                   }}
                   className={`px-2 py-1 rounded border transition ${
                     autoLoop
-                      ? "bg-white/[0.08] text-zinc-200 border-white/[0.14]"
+                      ? "bg-white/[0.1] text-zinc-200 border-white/[0.16]"
                       : "text-zinc-500 border-transparent hover:text-zinc-300"
                   }`}
                 >
@@ -263,7 +262,7 @@ export const BackgroundExperience: React.FC = () => {
                   }}
                   className={`px-2 py-1 rounded border transition ${
                     particlesEnabled
-                      ? "bg-white/[0.08] text-zinc-200 border-white/[0.14]"
+                      ? "bg-white/[0.1] text-zinc-200 border-white/[0.16]"
                       : "text-zinc-500 border-transparent hover:text-zinc-300"
                   }`}
                 >
@@ -278,7 +277,7 @@ export const BackgroundExperience: React.FC = () => {
                 setShowControls(true);
               }}
               onMouseEnter={() => sound.playHover()}
-              className="bg-[#0e1118]/80 hover:bg-[#151924] border border-white/[0.08] hover:border-white/[0.16] backdrop-blur-xl text-xs text-zinc-400 hover:text-zinc-200 px-3.5 py-1.5 rounded-full shadow-lg transition-all duration-200 flex items-center space-x-2 font-mono"
+              className="bg-[#0a0a0c]/85 hover:bg-[#141418] border border-white/[0.1] hover:border-white/[0.2] backdrop-blur-xl text-xs text-zinc-300 hover:text-white px-3.5 py-1.5 rounded-full shadow-lg transition-all duration-200 flex items-center space-x-2 font-mono"
             >
               <Sliders className="w-3 h-3 text-zinc-400" />
               <span>Scene: {BG_SCENES[activeIdx].name}</span>

@@ -10,6 +10,7 @@ import { ExecutionConsole } from "../components/ExecutionConsole";
 import { PayoffMatrixModal } from "../components/PayoffMatrixModal";
 import { ActivePositions, PositionRecord } from "../components/ActivePositions";
 import { ChaosTrigger } from "../components/ChaosTrigger";
+import { MonumentalFooter } from "../components/MonumentalFooter";
 import { PRESET_STRATEGIES, SplitStrategy, CONTRACT_ADDRESSES, EXPLORER_URL } from "../lib/constants";
 import { sound } from "../lib/soundFx";
 import { DivergenceLogo } from "../components/DivergenceLogo";
@@ -216,18 +217,8 @@ export default function Home() {
         isLoading={isExecuting}
       />
 
-      {/* Terminal Footer */}
-      <footer className="border-t border-white/[0.06] bg-[#07090e] py-6 px-6 relative z-10 text-xs text-zinc-500 font-mono">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center space-x-2 text-zinc-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>Divergence Router &bull; Somnia Shannon Testnet &bull; DreamDEX CLOB</span>
-          </div>
-          <div className="text-zinc-500 text-[11px]">
-            1-Click EVM Atomicity &bull; Built for Somnia &times; DreamDEX Hackathon
-          </div>
-        </div>
-      </footer>
+      {/* Monumental 35vh Architectural Footer */}
+      <MonumentalFooter />
     </div>
   );
 }

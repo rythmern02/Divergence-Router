@@ -61,8 +61,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Center Telemetry */}
         <div className="hidden md:flex items-center space-x-3 text-xs font-mono">
           <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-zinc-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            <span className="text-zinc-300 font-medium">Chain {SOMNIA_CHAIN_ID}</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+            <span className="text-zinc-200 font-medium">Chain {SOMNIA_CHAIN_ID}</span>
           </div>
 
           <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-zinc-400">
@@ -107,14 +107,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center space-x-2.5 bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5">
               <div className="text-right font-mono">
                 <div className="text-[10px] text-zinc-500 uppercase">Collateral</div>
-                <div className="text-xs font-semibold text-emerald-400 tabular-nums">
+                <div className="text-xs font-semibold text-white tabular-nums">
                   {collateralBalance.toLocaleString()} tUSDC
                 </div>
               </div>
               <div className="h-5 w-px bg-white/[0.08] mx-0.5" />
               <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <div className="text-xs font-mono text-zinc-300 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-300" />
+                <div className="text-xs font-mono text-zinc-200 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
                   {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
                 </div>
               </div>

@@ -72,7 +72,7 @@ export const ActivePositions: React.FC<ActivePositionsProps> = ({
                       </span>
                     )}
                     {pos.status === "RESOLVED_WIN" && (
-                      <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-2 py-0.5 rounded font-medium">
+                      <span className="text-[10px] font-mono text-white bg-white/[0.08] border border-white/[0.14] px-2 py-0.5 rounded font-medium">
                         2x Win Resolved
                       </span>
                     )}
@@ -118,7 +118,7 @@ export const ActivePositions: React.FC<ActivePositionsProps> = ({
                     <div
                       className={`text-sm font-semibold tabular-nums ${
                         pos.payout > pos.collateralTotal
-                          ? "text-emerald-400"
+                          ? "text-white"
                           : pos.payout === pos.collateralTotal
                           ? "text-zinc-300"
                           : "text-zinc-400"
@@ -136,7 +136,7 @@ export const ActivePositions: React.FC<ActivePositionsProps> = ({
                       }}
                       onMouseEnter={() => sound.playHover()}
                       disabled={isRedeeming}
-                      className="px-3.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-medium font-mono text-xs flex items-center space-x-1 transition active:scale-98 whitespace-nowrap"
+                      className="px-3.5 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black font-semibold font-mono text-xs flex items-center space-x-1 transition active:scale-98 whitespace-nowrap shadow-sm"
                     >
                       <span>Claim</span>
                       <ArrowUpRight className="h-3.5 w-3.5" />
