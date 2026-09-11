@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "Divergence Router — Structured Event Contracts on Somnia DreamDEX",
   description:
     "1-Click Atomic Execution Engine for cross-asset decorrelation and calendar term-structure split trading.",
+  icons: {
+    icon: [
+      { url: "/assets/logo.jpg" },
+      { url: "/assets/logo.jpg", sizes: "32x32", type: "image/jpeg" },
+    ],
+    shortcut: "/assets/logo.jpg",
+    apple: "/assets/logo.jpg",
+  },
 };
 
 export default function RootLayout({
