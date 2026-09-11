@@ -15,6 +15,7 @@ export const CONTRACT_ADDRESSES = {
 
 export interface MarketLegChoice {
   marketId: string;
+  marketAddress: string;
   name: string;
   asset: string;
   cadence: string;
@@ -33,46 +34,88 @@ export interface SplitStrategy {
   decorrelationFactor: string;
 }
 
+export interface PositionRecord {
+  id: number;
+  title: string;
+  legAOutcome: string;
+  legBOutcome: string;
+  collateralTotal: number;
+  status: "ACTIVE" | "RESOLVED_WIN" | "RESOLVED_FLAT" | "REDEEMED";
+  payout: number;
+  createdAt: string;
+  txHash?: string;
+}
+
 export const PRESET_STRATEGIES: SplitStrategy[] = [
   {
-    id: "cross-asset-btc-eth",
-    title: "BTC↑ / ETH↓ Cross-Asset Split",
-    subtitle: "Divergence play: BTC pumps while ETH decouples downward in the same 15m window.",
+    id: "cross-asset-btc-eth-1h",
+    title: "BTC↑ / ETH↓ 1-Hour Divergence Split",
+    subtitle: "Divergence play: BTC pumps while ETH decouples downward in the active 1-hour window.",
     type: "CROSS_ASSET",
     legA: {
-      marketId: "0x6274632d31356d2d746573746e65740000000000000000000000000000000000",
-      name: "BTC 15m UP",
+      marketId: "0x0000000000000000000000000000000000000000000000000000000000019f4f",
+      marketAddress: "0xd74e6f3dd99536a08c7f4b6c765e26b0c8d3733e", // Active BTC-1h (Status: 1 Trading)
+      name: "BTC 1h UP",
       asset: "BTC",
-      cadence: "15m",
+      cadence: "1h",
       choice: 0,
       impliedProb: 0.62,
     },
     legB: {
-      marketId: "0x6574682d31356d2d746573746e65740000000000000000000000000000000000",
-      name: "ETH 15m DOWN",
+      marketId: "0x0000000000000000000000000000000000000000000000000000000000019f50",
+      marketAddress: "0xa55460d7990a088eeeda2fb4805d172ac4705eb3", // Active ETH-1h (Status: 1 Trading)
+      name: "ETH 1h DOWN",
       asset: "ETH",
-      cadence: "15m",
+      cadence: "1h",
       choice: 1,
-      impliedProb: 0.56,
+      impliedProb: 0.54,
     },
-    historicalWinRate: "38%",
-    decorrelationFactor: "High (+18% delta)",
+    historicalWinRate: "41%",
+    decorrelationFactor: "High (+19% delta)",
+  },
+  {
+    id: "cross-asset-macro-4h",
+    title: "BTC↑ / ETH↓ 4-Hour Macro Divergence",
+    subtitle: "Macro spread: Capital rotation into BTC strength against ETH over an extended 4-hour cycle.",
+    type: "CROSS_ASSET",
+    legA: {
+      marketId: "0x0000000000000000000000000000000000000000000000000000000000019f4d",
+      marketAddress: "0x697cb0afc3aafca251fa970ae7c9ee8ae09704f5", // Active BTC-4h (Status: 1 Trading)
+      name: "BTC 4h UP",
+      asset: "BTC",
+      cadence: "4h",
+      choice: 0,
+      impliedProb: 0.65,
+    },
+    legB: {
+      marketId: "0x0000000000000000000000000000000000000000000000000000000000019f4e",
+      marketAddress: "0xa4fd17e78fc58453b03f678e6b4b8754cddb08d9", // Active ETH-4h (Status: 1 Trading)
+      name: "ETH 4h DOWN",
+      asset: "ETH",
+      cadence: "4h",
+      choice: 1,
+      impliedProb: 0.51,
+    },
+    historicalWinRate: "44%",
+    decorrelationFactor: "Macro Decoupled (+24% delta)",
   },
   {
     id: "calendar-btc-15m-1h",
-    title: "BTC-15m↑ / BTC-1h↓ Term-Structure Split",
-    subtitle: "Term inversion play: Short-term 15m momentum squeeze against a 1h downward macro trend.",
+    title: "BTC-15m↑ / BTC-1h↓ Term Inversion",
+    subtitle: "Term structure inversion: Short-term momentum squeeze against a 1-hour downward macro trend.",
     type: "CALENDAR_SPREAD",
     legA: {
-      marketId: "0x6274632d31356d2d746573746e65740000000000000000000000000000000000",
+      marketId: "0x0000000000000000000000000000000000000000000000000000000000019f51",
+      marketAddress: "0xc07928d1bea732fb7009483adbcf90d0845c02ee", // Active BTC-15m (Status: 1 Trading)
       name: "BTC 15m UP",
       asset: "BTC",
       cadence: "15m",
       choice: 0,
-      impliedProb: 0.62,
+      impliedProb: 0.59,
     },
     legB: {
-      marketId: "0x6274632d31682d746573746e6574000000000000000000000000000000000000",
+      marketId: "0x0000000000000000000000000000000000000000000000000000000000019f4f",
+      marketAddress: "0xd74e6f3dd99536a08c7f4b6c765e26b0c8d3733e", // Active BTC-1h (Status: 1 Trading)
       name: "BTC 1h DOWN",
       asset: "BTC",
       cadence: "1h",

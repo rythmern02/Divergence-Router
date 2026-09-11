@@ -55,36 +55,49 @@ body {
   background: radial-gradient(circle at 50% 30%, transparent 20%, rgba(5, 5, 5, 0.98) 85%);
 }
 
-/* Swiss / Linear Pure Neutral Obsidian & Titanium Surfaces (ZERO BLUE) */
-.surface-panel {
-  background: rgba(14, 14, 14, 0.82);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.85), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-}
-
-.surface-panel-interactive {
-  background: rgba(18, 18, 18, 0.75);
+/* Swiss / Linear Pure Monolithic Frameless Terminal Surfaces (ZERO BLUE, ZERO CARD BOXES) */
+.frameless-surface {
+  background: rgba(10, 10, 10, 0.45);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+.hairline-b {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hairline-t {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hairline-l {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hairline-r {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Frameless Strategy Selector - Left Beam Accent without Box Borders */
+.strategy-row {
+  position: relative;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 2px solid transparent;
 }
 
-.surface-panel-interactive:hover {
-  background: rgba(26, 26, 26, 0.88);
-  border-color: rgba(255, 255, 255, 0.16);
-  transform: translateY(-1px);
+.strategy-row-active {
+  border-left: 2px solid #ffffff;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
 }
 
-.surface-panel-active {
-  background: rgba(28, 28, 28, 0.95);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 20px 44px -12px rgba(0, 0, 0, 0.95), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+.strategy-row-idle {
+  border-left: 2px solid rgba(255, 255, 255, 0.06);
+  background: transparent;
+}
+
+.strategy-row-idle:hover {
+  border-left-color: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
 }
 
 /* Numeric alignment */

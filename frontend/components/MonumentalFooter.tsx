@@ -61,22 +61,22 @@ export const MonumentalFooter: React.FC = () => {
         </div>
       </div>
 
-      {/* Massive 35vh Typographic Architectural Signature */}
-      <div className="relative w-full h-[32vh] sm:h-[35vh] flex items-center justify-center overflow-hidden pointer-events-none">
+      {/* Monumental Typographic Architectural Signature */}
+      <div className="relative w-full h-[32vh] sm:h-[38vh] md:h-[42vh] flex items-center justify-center overflow-hidden pointer-events-none">
         {/* Subtle radial glow from behind text */}
-        <div className="absolute inset-0 bg-radial-vignette opacity-80" />
+        <div className="absolute inset-0 bg-radial-vignette opacity-90" />
 
-        {/* Massive Beveled Titanium Headline */}
-        <div className="w-full text-center px-2">
-          <span className="text-[13.5vw] sm:text-[14.5vw] font-black tracking-tighter uppercase leading-none block font-sans bg-gradient-to-b from-white/[0.25] via-white/[0.08] to-transparent bg-clip-text text-transparent select-none drop-shadow-sm">
+        {/* Monumental Beveled Titanium Headline */}
+        <div className="w-full flex items-center justify-center px-4 sm:px-6 overflow-hidden">
+          <span className="text-[12vw] sm:text-[13.8vw] md:text-[14.6vw] lg:text-[15vw] font-black tracking-[-0.05em] uppercase leading-none inline-block whitespace-nowrap font-sans bg-gradient-to-b from-white/[0.38] via-white/[0.12] to-transparent bg-clip-text text-transparent select-none drop-shadow-lg">
             DIVERGENCE
           </span>
         </div>
 
         {/* Subtle center hairline dividing line */}
-        <div className="absolute bottom-6 w-full max-w-7xl mx-auto px-6 flex items-center justify-between text-[10px] font-mono text-zinc-600">
+        <div className="absolute bottom-5 w-full max-w-7xl mx-auto px-6 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-zinc-500">
           <span>LATENCY: &lt; 380MS</span>
-          <span>EVM ALL-OR-NONE EXECUTION</span>
+          <span>EVM ALL-OR-NONE ATOMICITY</span>
           <span>SOMNIA SHANNON TESTNET &bull; CHAIN 50312</span>
         </div>
       </div>

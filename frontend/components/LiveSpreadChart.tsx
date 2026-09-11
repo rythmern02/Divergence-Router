@@ -44,12 +44,12 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
   const areaPoints = `0,${height} ${points} ${width},${height}`;
 
   return (
-    <div className="bg-black/25 border border-white/[0.06] rounded-xl p-4 relative overflow-hidden">
-      <div className="flex items-center justify-between mb-3">
+    <div className="py-3 relative overflow-hidden">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2">
-          <Activity className="w-3.5 h-3.5 text-zinc-300" />
+          <Activity className="w-3.5 h-3.5 text-zinc-400" />
           <span className="text-xs font-mono font-medium text-zinc-300 uppercase tracking-wider">
-            Decorrelation Spread &bull; 15m Cadence
+            Live Disparity Stream &bull; 15m Cadence
           </span>
         </div>
 
@@ -62,7 +62,7 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
       </div>
 
       {/* Clean Minimalist Line Graph */}
-      <div className="w-full h-20 relative">
+      <div className="w-full h-24 relative">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="w-full h-full overflow-visible"
@@ -70,7 +70,7 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
         >
           <defs>
             <linearGradient id="spreadAreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.14" />
               <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
             </linearGradient>
           </defs>
@@ -81,8 +81,8 @@ export const LiveSpreadChart: React.FC<LiveSpreadChartProps> = ({ strategy }) =>
           {/* Stroke */}
           <polyline
             fill="none"
-            stroke="#f1f5f9"
-            strokeWidth="1.75"
+            stroke="#ffffff"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             points={points}

@@ -13,6 +13,8 @@ interface PayoffMatrixModalProps {
   collateralPerLeg: number;
   slippageTolerance: number;
   isLoading: boolean;
+  statusMessage?: string;
+  errorMessage?: string | null;
 }
 
 export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
@@ -23,6 +25,8 @@ export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
   collateralPerLeg,
   slippageTolerance,
   isLoading,
+  statusMessage,
+  errorMessage,
 }) => {
   if (!isOpen) return null;
 
@@ -60,7 +64,7 @@ export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
         </div>
 
         {/* Decorrelation Notice */}
-        <div className="bg-amber-500/[0.06] border border-amber-500/20 rounded-xl p-3 my-4 text-xs font-mono text-amber-200/90 flex items-start space-x-2.5">
+        <div className="border-l-2 border-amber-500/70 pl-3.5 py-1.5 my-4 text-xs font-mono text-amber-200/90 flex items-start space-x-2.5">
           <AlertCircle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
           <div>
             <span className="font-medium text-amber-300">Decorrelation Trade Notice: </span>
@@ -68,59 +72,59 @@ export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
           </div>
         </div>
 
-        {/* The 4-Quadrant Payoff Matrix */}
-        <div className="rounded-xl border border-white/[0.08] overflow-hidden mb-4">
+        {/* The 4-Quadrant Payoff Matrix - Frameless Table with Hairline Rules */}
+        <div className="border-y border-white/[0.08] overflow-hidden my-4">
           <table className="w-full text-xs text-left">
-            <thead className="bg-black/40 text-zinc-400 uppercase text-[10px] font-mono border-b border-white/[0.06]">
+            <thead className="bg-white/[0.02] text-zinc-400 uppercase text-[10px] font-mono border-b border-white/[0.06]">
               <tr>
-                <th className="px-3.5 py-2">{strategy.legA.asset} Leg</th>
-                <th className="px-3.5 py-2">{strategy.legB.asset} Leg</th>
-                <th className="px-3.5 py-2 text-right">Payout</th>
-                <th className="px-3.5 py-2 text-right">Return</th>
+                <th className="px-3 py-2.5">{strategy.legA.asset} Leg</th>
+                <th className="px-3 py-2.5">{strategy.legB.asset} Leg</th>
+                <th className="px-3 py-2.5 text-right">Payout</th>
+                <th className="px-3 py-2.5 text-right">Return</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04] font-mono text-xs">
               {/* Row 1: Target Win */}
-              <tr className="bg-white/[0.06]">
-                <td className="px-3.5 py-2.5 font-medium text-white">UP (Win)</td>
-                <td className="px-3.5 py-2.5 font-medium text-white">DOWN (Win)</td>
-                <td className="px-3.5 py-2.5 text-right font-semibold text-white tabular-nums">
+              <tr className="bg-white/[0.04]">
+                <td className="px-3 py-2.5 font-medium text-white">UP (Win)</td>
+                <td className="px-3 py-2.5 font-medium text-white">DOWN (Win)</td>
+                <td className="px-3 py-2.5 text-right font-semibold text-white tabular-nums">
                   {maxWinPayout} tUSDC
                 </td>
-                <td className="px-3.5 py-2.5 text-right text-white font-semibold">
+                <td className="px-3 py-2.5 text-right text-white font-semibold">
                   +100% (2x)
                 </td>
               </tr>
 
               {/* Row 2: Reverse Fail */}
-              <tr className="bg-black/30">
-                <td className="px-3.5 py-2.5 text-zinc-400">DOWN (Loss)</td>
-                <td className="px-3.5 py-2.5 text-zinc-400">UP (Loss)</td>
-                <td className="px-3.5 py-2.5 text-right text-zinc-400 tabular-nums">0 tUSDC</td>
-                <td className="px-3.5 py-2.5 text-right text-zinc-400">-100% (0x)</td>
+              <tr>
+                <td className="px-3 py-2 text-zinc-500">DOWN (Loss)</td>
+                <td className="px-3 py-2 text-zinc-500">UP (Loss)</td>
+                <td className="px-3 py-2 text-right text-zinc-500 tabular-nums">0 tUSDC</td>
+                <td className="px-3 py-2 text-right text-zinc-500">-100% (0x)</td>
               </tr>
 
               {/* Row 3: Macro Co-Pump */}
-              <tr className="bg-black/20">
-                <td className="px-3.5 py-2 text-zinc-300">UP (Win)</td>
-                <td className="px-3.5 py-2 text-zinc-500">UP (Loss)</td>
-                <td className="px-3.5 py-2 text-right text-zinc-300 tabular-nums">{collateralPerLeg} tUSDC</td>
-                <td className="px-3.5 py-2 text-right text-zinc-500">Flat (1x)</td>
+              <tr>
+                <td className="px-3 py-2 text-zinc-300">UP (Win)</td>
+                <td className="px-3 py-2 text-zinc-500">UP (Loss)</td>
+                <td className="px-3 py-2 text-right text-zinc-300 tabular-nums">{collateralPerLeg} tUSDC</td>
+                <td className="px-3 py-2 text-right text-zinc-500">Flat (1x)</td>
               </tr>
 
               {/* Row 4: Macro Co-Dump */}
-              <tr className="bg-black/20">
-                <td className="px-3.5 py-2 text-zinc-500">DOWN (Loss)</td>
-                <td className="px-3.5 py-2 text-zinc-300">DOWN (Win)</td>
-                <td className="px-3.5 py-2 text-right text-zinc-300 tabular-nums">{collateralPerLeg} tUSDC</td>
-                <td className="px-3.5 py-2 text-right text-zinc-500">Flat (1x)</td>
+              <tr>
+                <td className="px-3 py-2 text-zinc-500">DOWN (Loss)</td>
+                <td className="px-3 py-2 text-zinc-300">DOWN (Win)</td>
+                <td className="px-3 py-2 text-right text-zinc-300 tabular-nums">{collateralPerLeg} tUSDC</td>
+                <td className="px-3 py-2 text-right text-zinc-500">Flat (1x)</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         {/* Sizing & Atomic Guard Specs */}
-        <div className="bg-black/30 p-3 rounded-xl border border-white/[0.06] text-xs space-y-1.5 mb-5 font-mono">
+        <div className="border-l-2 border-zinc-700 pl-3.5 py-1 text-xs space-y-1.5 my-4 font-mono">
           <div className="flex justify-between text-zinc-400">
             <span>Total Principal:</span>
             <span className="text-zinc-200 font-medium tabular-nums">{totalCollateral} tUSDC</span>
@@ -135,6 +139,20 @@ export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
           </div>
         </div>
 
+        {/* Live Status or Error Callout */}
+        {statusMessage && (
+          <div className="p-3 mb-4 rounded-lg bg-white/[0.04] border border-white/10 text-xs font-mono text-zinc-200 flex items-center space-x-2.5 animate-pulse">
+            <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+            <span>{statusMessage}</span>
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="p-3 mb-4 rounded-lg bg-rose-500/10 border border-rose-500/30 text-xs font-mono text-rose-300 leading-relaxed">
+            {errorMessage}
+          </div>
+        )}
+
         {/* Action Buttons */}
         <div className="flex items-center space-x-3">
           <button
@@ -143,7 +161,7 @@ export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
               onClose();
             }}
             disabled={isLoading}
-            className="w-1/3 py-2.5 rounded-xl border border-white/[0.08] hover:bg-white/[0.04] text-zinc-300 text-xs font-medium transition"
+            className="w-1/3 py-2.5 rounded-xl border border-white/[0.08] hover:bg-white/[0.04] text-zinc-300 text-xs font-medium transition disabled:opacity-50"
           >
             Cancel
           </button>
@@ -153,12 +171,12 @@ export const PayoffMatrixModal: React.FC<PayoffMatrixModalProps> = ({
               onConfirm();
             }}
             disabled={isLoading}
-            className="w-2/3 py-2.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold shadow-sm transition active:scale-98 flex items-center justify-center space-x-2"
+            className="w-2/3 py-2.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold shadow-sm transition active:scale-98 flex items-center justify-center space-x-2 disabled:opacity-60"
           >
             {isLoading ? (
               <>
                 <span className="h-3.5 w-3.5 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
-                <span>Executing On-Chain...</span>
+                <span>Sign in Wallet...</span>
               </>
             ) : (
               <span>Confirm &amp; Execute Split</span>

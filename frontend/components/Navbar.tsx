@@ -9,13 +9,23 @@ import { DivergenceLogo } from "./DivergenceLogo";
 interface NavbarProps {
   userAddress: string | null;
   onConnect: () => void;
+  onDisconnect?: () => void;
   collateralBalance: number;
+  sttBalance?: string;
+  isCorrectNetwork?: boolean;
+  onSwitchNetwork?: () => void;
+  isConnecting?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   userAddress,
   onConnect,
+  onDisconnect,
   collateralBalance,
+  sttBalance = "0.00",
+  isCorrectNetwork = true,
+  onSwitchNetwork,
+  isConnecting = false,
 }) => {
   const [mounted, setMounted] = useState(false);
   const [latency, setLatency] = useState(380);
@@ -60,10 +70,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Center Telemetry */}
         <div className="hidden md:flex items-center space-x-3 text-xs font-mono">
-          <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-zinc-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-            <span className="text-zinc-200 font-medium">Chain {SOMNIA_CHAIN_ID}</span>
-          </div>
+          {!isCorrectNetwork && userAddress ? (
+            <button
+              onClick={onSwitchNetwork}
+              className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 transition animate-pulse"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              <span>Wrong Network &bull; Click to Switch to Shannon</span>
+            </button>
+          ) : (
+            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-zinc-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="text-zinc-200 font-medium">Somnia Shannon ({SOMNIA_CHAIN_ID})</span>
+            </div>
+          )}
 
           <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-zinc-400">
             <Activity className="h-3 w-3 text-zinc-400" />
@@ -99,25 +119,29 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="hidden sm:flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-zinc-200 transition-colors px-3 py-2 rounded-lg border border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02] font-mono"
           >
             <ShieldCheck className="h-3.5 w-3.5 text-zinc-400" />
-            <span>Router Code</span>
+            <span>Router</span>
             <ExternalLink className="h-2.5 w-2.5 text-zinc-500" />
           </a>
 
           {userAddress ? (
             <div className="flex items-center space-x-2.5 bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-1.5">
               <div className="text-right font-mono">
-                <div className="text-[10px] text-zinc-500 uppercase">Collateral</div>
+                <div className="text-[10px] text-zinc-500 uppercase">{sttBalance} STT</div>
                 <div className="text-xs font-semibold text-white tabular-nums">
                   {collateralBalance.toLocaleString()} tUSDC
                 </div>
               </div>
               <div className="h-5 w-px bg-white/[0.08] mx-0.5" />
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-300" />
+              <button
+                onClick={onDisconnect}
+                title="Click to disconnect"
+                className="flex items-center gap-1.5 hover:opacity-80 transition cursor-pointer"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <div className="text-xs font-mono text-zinc-200 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
                   {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
                 </div>
-              </div>
+              </button>
             </div>
           ) : (
             <button
@@ -126,10 +150,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onConnect();
               }}
               onMouseEnter={() => sound.playHover()}
-              className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-zinc-100 hover:bg-white text-zinc-900 text-xs font-semibold shadow-sm transition active:scale-98"
+              disabled={isConnecting}
+              className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-white hover:bg-zinc-200 text-black text-xs font-semibold shadow-sm transition active:scale-98 disabled:opacity-50"
             >
               <Wallet className="h-3.5 w-3.5" />
-              <span>Connect Wallet</span>
+              <span>{isConnecting ? "Connecting..." : "Connect Wallet"}</span>
             </button>
           )}
         </div>
