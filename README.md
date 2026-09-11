@@ -18,9 +18,9 @@
 
 ---
 
-## 🎯 Executive Summary
+## Executive Summary
 
-Every current event-contract implementation on prediction markets treats contracts in **1D isolation**: a single asset, a single expiry window, and a binary $\{0, 1\}$ coin-flip.
+Every current event-contract implementation on prediction markets treats contracts in **1D isolation**: a single asset, a single expiry window, and a binary {0, 1} coin-flip.
 
 **Divergence Router** transforms these isolated binary primitives into **institutional-grade structured positions**. By simultaneously bridging the two native orthogonal dimensions DreamDEX provides—**Asset** (BTC, ETH) and **Cadence Window** (15m, 1h, 4h)—Divergence Router allows traders to execute:
 
@@ -31,12 +31,12 @@ With **EVM Transaction Atomicity**, either both legs fill within defined slippag
 
 ---
 
-## 🏛️ System Architecture
+## System Architecture
 
 ```mermaid
 flowchart TB
-    subgraph UI["Institutional Frontend Terminal (Next.js 14 + Viem)"]
-        A1["Telemetry HUD & Block Stream (< 380ms)"]
+    subgraph UI["Institutional Frontend Terminal (Next.js 14 and Viem)"]
+        A1["Telemetry HUD and Block Stream (sub-380ms)"]
         A2["Dynamic GraphQL Indexer Sync"]
         A3["2D Strategy Matrix Selector"]
         A4["4-Quadrant Payoff Matrix Modal"]
@@ -44,65 +44,66 @@ flowchart TB
     end
 
     subgraph Router["DivergenceRouter.sol (0xdAf785...875F)"]
-        B1["openSplit(legA, legB, collateral, deadline)"]
-        B2["Pre-Flight On-Chain Status Guard (status == 1)"]
-        B3["Atomic Sequential Minting (mintSet)"]
-        B4["Slippage Invariant Enforcer (minFillAmount)"]
-        B5["redeemSplit(positionId)"]
+        B1["openSplit Function"]
+        B2["Pre-Flight On-Chain Status Guard"]
+        B3["Atomic Sequential Minting"]
+        B4["Slippage Invariant Enforcer"]
+        B5["redeemSplit Function"]
     end
 
     subgraph DreamDEX["DreamDEX Core Protocol (CREATE3 Deployed)"]
         C1["BinaryMarketsModule (0x3ecC69...e388)"]
-        C2["Binary Pool A (BTC Complete Sets)"]
-        C3["Binary Pool B (ETH Complete Sets)"]
+        C2["Binary Pool A - BTC Complete Sets"]
+        C3["Binary Pool B - ETH Complete Sets"]
         C4["OutcomeToken6909 (0xB52c59...55b9)"]
         C5["BinarySettlement (0xbF4a49...Ed23)"]
         C6["CollateralToken tUSDC (0x70a86D...5d8E)"]
     end
 
-    A3 -->|User Configures Legs| A4
-    A4 -->|Sign EIP-1193 Transaction| B1
+    A3 -->|"Configure Legs"| A4
+    A4 -->|"Sign EIP-1193 Transaction"| B1
     B1 --> B2
-    B2 -->|Pull Collateral| C6
-    B1 -->|Leg A Mint| C2
-    B1 -->|Leg B Mint| C3
-    B4 -->|InsufficientFill Exception| B1
-    C2 & C3 -->|Outcome Tokens (ERC-6909)| C4
-    B5 -->|Claim Winnings| C5
-    C5 -->|Payout Collateral| A1
+    B2 -->|"Pull Collateral"| C6
+    B1 -->|"Leg A Complete Set Mint"| C2
+    B1 -->|"Leg B Complete Set Mint"| C3
+    B4 -.->|"InsufficientFill Revert"| B1
+    C2 -->|"ERC-6909 Tokens"| C4
+    C3 -->|"ERC-6909 Tokens"| C4
+    B5 -->|"Claim Winnings"| C5
+    C5 -->|"Disburse Collateral Payout"| A1
 ```
 
 ---
 
-## 🛡️ Resolving the 3 Core Traps (Engineering Preemption)
+## Resolving the 3 Core Traps (Engineering Preemption)
 
 A critical differentiator of Divergence Router is that it explicitly anticipates, solves, and proves the resolution of three fatal flaws in multi-market prediction trading:
 
 ### 1. The "Binary Correlation Trap" (Economic Reframing)
-* **The Trap**: In traditional finance, a pairs trade makes continuous money on relative outperformance $(P_A - P_B)$. But binary contracts settle strictly to $\{0, 1\}$. If both BTC and ETH pump together, both resolve to UP—a DOWN hedge on ETH drops to 0, destroying the trade even if BTC gained more in percentage terms.
+* **The Trap**: In traditional finance, a pairs trade makes continuous money on relative outperformance (P_A - P_B). But binary contracts settle strictly to {0, 1}. If both BTC and ETH pump together, both resolve to UP—a DOWN hedge on ETH drops to 0, destroying the trade even if BTC gained more in percentage terms.
 * **Our Solution**: We discard misleading "pairs trade" or "delta-neutral" labels. The product is strictly framed as a **"Divergence Split"**. Before confirming any trade, users review a mandatory **4-Quadrant Payoff Matrix**:
 
 ```mermaid
 flowchart TD
     subgraph Matrix["4-Quadrant Structured Payoff Matrix"]
-        Q1["Quadrant 1: Divergence Win (BTC UP + ETH DOWN)<br/>Payout: 2.0x Collateral (+100% Net Profit)"]
-        Q2["Quadrant 2: Macro Co-Movement (BTC UP + ETH UP)<br/>Payout: 1.0x Collateral (Protected Flat / Net Zero)"]
-        Q3["Quadrant 3: Macro Co-Movement (BTC DOWN + ETH DOWN)<br/>Payout: 1.0x Collateral (Protected Flat / Net Zero)"]
-        Q4["Quadrant 4: Inverse Decoupling (BTC DOWN + ETH UP)<br/>Payout: 0.0x Collateral (Full Risk Limit)"]
+        Q1["Quadrant 1: Divergence Win - BTC UP and ETH DOWN - 2.0x Payout (100% Net Profit)"]
+        Q2["Quadrant 2: Macro Co-Movement - BTC UP and ETH UP - 1.0x Protected Flat (Net Zero)"]
+        Q3["Quadrant 3: Macro Co-Movement - BTC DOWN and ETH DOWN - 1.0x Protected Flat (Net Zero)"]
+        Q4["Quadrant 4: Inverse Decoupling - BTC DOWN and ETH UP - 0.0x Defined Risk Limit"]
     end
 ```
 
-### 2. "Legging-In" & Execution Slippage (Technical Implementation)
+### 2. "Legging-In" and Execution Slippage (Technical Implementation)
 * **The Trap**: Decentralized prediction order books frequently suffer from fragmented or starved liquidity. If an app attempts to buy Leg A and Leg B in two separate transactions, Leg A may succeed while Leg B fails or slips wildly. The user is stranded with an unhedged, naked directional bet.
-* **Our Solution**: [`DivergenceRouter.sol`](file:///Users/rythme/developer/blockchain/somnia/dreamdex/contracts/DivergenceRouter.sol) enforces **EVM Transaction Atomicity**. Leg A and Leg B execute sequentially inside a single Solidity transaction. If Leg B fails or slips past `minFillAmount`, the entire transaction reverts, unwinding Leg A via EVM state rollback. **Zero orphan risk. 100% of collateral is refunded.**
+* **Our Solution**: `DivergenceRouter.sol` enforces **EVM Transaction Atomicity**. Leg A and Leg B execute sequentially inside a single Solidity transaction. If Leg B fails or slips past `minFillAmount`, the entire transaction reverts, unwinding Leg A via EVM state rollback. **Zero orphan risk. 100% of collateral is refunded.**
 
-### 3. Mislabeling as a "Passive Yield Vault" (Scope & Architecture)
+### 3. Mislabeling as a "Passive Yield Vault" (Scope and Architecture)
 * **The Trap**: Labeling the system a "Vault" leads DeFi users and judges to expect ERC-4626 continuous yield farming. Rebalancing continuous LP capital across 15-minute expiring binary tokens creates an unfeasible gas overhead and massive impermanent loss.
 * **Our Solution**: Divergence Router is explicitly a **Stateless 1-Click Execution Router**. It holds zero idle LP capital and runs no continuous rebalancing loops. Traders supply collateral on-demand to construct discrete structured positions that resolve and disburse payouts directly to their wallets.
 
 ---
 
-## 🔄 Atomic Execution & Rollback Sequence
+## Atomic Execution and Rollback Sequence
 
 ```mermaid
 sequenceDiagram
@@ -130,10 +131,10 @@ sequenceDiagram
         MarketB-->>Router: Outcome tokens minted (Fill >= minFillAmountB)
         Note over Router: Record SplitPosition metadata
         Router-->>Trader: Transaction Success (Position Created)
-    else Starved Book / High Slippage (Fill < minFillAmountB)
+    else Starved Book or High Slippage (Fill below minFillAmountB)
         Router->>MarketB: mintSet(collateralPerLeg)
         MarketB-->>Router: Insufficient fill detected
-        Note over Router: REVERT InsufficientFill(...)
+        Note over Router: REVERT InsufficientFill
         Note over Router,Trader: Full EVM State Rollback (Leg A unwound, 100% collateral retained)
         Router-->>Trader: Transaction Reverted (Zero Capital Lost)
     end
@@ -141,14 +142,14 @@ sequenceDiagram
 
 ---
 
-## 📈 Quantitative & Financial Mechanics
+## Quantitative and Financial Mechanics
 
-### 1. Implied Probability Spread Delta ($\Delta$)
+### 1. Implied Probability Spread Delta
 The quantitative engine computes the instantaneous implied probability spread between the two legs:
 $$\Delta = P(\text{Leg}_A = \text{Target}) - P(\text{Leg}_B = \text{Inverse})$$
 Where $P = \frac{\text{TickPrice}}{\text{PayoutDenominator}}$. When $\Delta$ diverges from historical decorrelation averages, an asymmetric structured split becomes mathematically favorable.
 
-### 2. Slippage & Minimum Fill Invariant
+### 2. Slippage and Minimum Fill Invariant
 For each leg $i \in \{A, B\}$, given user slippage tolerance $\tau \in [0.005, 0.05]$:
 $$\text{minFill}_i = \text{collateralPerLeg} \times (1 - \tau)$$
 If on-chain fill $F_i < \text{minFill}_i$, the router reverts with `InsufficientFill(address market, uint256 fill, uint256 minFillAmount)`.
@@ -156,11 +157,11 @@ If on-chain fill $F_i < \text{minFill}_i$, the router reverts with `Insufficient
 ### 3. Payout Formula
 Upon settlement, total payout $R$ disbursed by `redeemSplit(positionId)` is strictly:
 $$R = \mathbb{I}(\text{Winner}_A = \text{Choice}_A) \cdot C + \mathbb{I}(\text{Winner}_B = \text{Choice}_B) \cdot C$$
-Where $C$ is collateral per leg, and $\mathbb{I}(\cdot)$ is the binary indicator function $\{0, 1\}$.
+Where $C$ is collateral per leg, and $\mathbb{I}(\cdot)$ is the binary indicator function {0, 1}.
 
 ---
 
-## 🌐 Live Somnia Shannon Testnet Deployment
+## Live Somnia Shannon Testnet Deployment
 
 All contracts are deployed, active, and verified on **Somnia Shannon Testnet** (`Chain ID: 50312`):
 
@@ -177,24 +178,24 @@ All contracts are deployed, active, and verified on **Somnia Shannon Testnet** (
 
 ---
 
-## 📍 Lifecycle State Machine
+## Lifecycle State Machine
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Discovered: Indexer fetches active status 1 markets
+    [*] --> Discovered: Indexer fetches active markets
     Discovered --> PreFlight: User configures split parameters
     PreFlight --> Executing: Trader signs atomic openSplit transaction
-    Executing --> Active: Both legs fill >= minFillAmount (EVM Atomic Commit)
-    Executing --> RolledBack: Leg B slips or starved book (EVM Revert & Collateral Refund)
-    RolledBack --> [*]
-    Active --> Resolved: Oracle finalizes market outcomes at expiry
-    Resolved --> Redeemed: Trader or keeper triggers redeemSplit(positionId)
-    Redeemed --> [*]: Collateral payout disbursed to trader wallet
+    Executing --> Active: Both legs fill within slippage limit
+    Executing --> RolledBack: Insufficient fill on Leg B triggers EVM revert
+    RolledBack --> [*]: Full collateral retained
+    Active --> Resolved: Oracle finalizes outcomes at expiry
+    Resolved --> Redeemed: User or keeper calls redeemSplit
+    Redeemed --> [*]: Payout disbursed to user wallet
 ```
 
 ---
 
-## ⚡ The Somnia Sub-Second Advantage
+## The Somnia Sub-Second Advantage
 
 Divergence and term-structure mispricings between fast (15m) and macro (1h/4h) windows are fleeting. On traditional L1s or congested L2s:
 * Spread windows close before block confirmation.
@@ -204,12 +205,12 @@ Divergence and term-structure mispricings between fast (15m) and macro (1h/4h) w
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
-### 1. Clone & Install Dependencies
+### 1. Clone and Install Dependencies
 ```bash
-git clone https://github.com/your-username/dreamdex-divergence-router.git
-cd dreamdex-divergence-router
+git clone https://github.com/rythmern02/Divergence-Router.git
+cd Divergence-Router
 npm install
 cd frontend && npm install && cd ..
 ```
@@ -226,7 +227,7 @@ Validates all 10 unit and integration tests including complete-set minting, roll
 npx hardhat test
 ```
 
-### 4. Run Quantitative Depth & Spread Engine
+### 4. Run Quantitative Depth and Spread Engine
 Discovers live Somnia Shannon testnet markets, computes live implied probability spreads, and runs pre-flight orderbook depth simulation:
 ```bash
 npx tsx scripts/quant.ts
@@ -246,19 +247,19 @@ Open [http://localhost:3000](http://localhost:3000) to trade live divergence spl
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
-dreamdex-divergence-router/
+Divergence-Router/
 ├── contracts/                     # Solidity Smart Contracts (Solidity 0.8.20)
 │   ├── DivergenceRouter.sol       # Core Atomic 1-Click Multi-Leg Router
-│   ├── interfaces/                # DreamDEX & ERC-6909 Interfaces
+│   ├── interfaces/                # DreamDEX and ERC-6909 Interfaces
 │   └── mocks/                     # Comprehensive Hardhat Test Doubles
 ├── frontend/                      # Institutional Next.js 14 Web3 Terminal
-│   ├── app/                       # App Router & Theme Engine
+│   ├── app/                       # App Router and Theme Engine
 │   ├── components/                # Frameless Architectural Component Suite
-│   │   ├── Navbar.tsx             # Live Web3 Wallet & Network Switcher
-│   │   ├── SomniaHUD.tsx          # Real-time Telemetry & Block Stream (<380ms)
+│   │   ├── Navbar.tsx             # Live Web3 Wallet and Network Switcher
+│   │   ├── SomniaHUD.tsx          # Real-time Telemetry and Block Stream
 │   │   ├── MarketMatrixSelector.tsx# 2D Strategy Matrix (Asset x Cadence)
 │   │   ├── LiveSpreadChart.tsx    # Sub-Second Dynamic Divergence Chart
 │   │   ├── ExecutionConsole.tsx   # Integrated Trading Console
@@ -267,18 +268,18 @@ dreamdex-divergence-router/
 │   │   ├── ActivePositions.tsx    # On-Chain Financial Settlement Blotter
 │   │   └── MonumentalFooter.tsx   # Colossal Beveled Titanium Architectural Signature
 │   └── lib/
-│       ├── web3.ts                # Full EIP-1193 Viem Web3 Provider & On-Chain Sync
-│       ├── constants.ts           # Contract Addresses, ABIs & Strategy Presets
+│       ├── web3.ts                # Full EIP-1193 Viem Web3 Provider and On-Chain Sync
+│       ├── constants.ts           # Contract Addresses, ABIs and Strategy Presets
 │       └── soundFx.ts             # Synthesized Web Audio API Micro-Interactions
-├── scripts/                       # Deployment & Quantitative Scripts
+├── scripts/                       # Deployment and Quantitative Scripts
 │   ├── deploy.ts                  # Hardhat Somnia Shannon Testnet Deployment
-│   ├── quant.ts                   # Probability Spread & Depth Engine
+│   ├── quant.ts                   # Probability Spread and Depth Engine
 │   ├── chaos-thin-book.ts         # Starved-Book Atomic Rollback Proof
 │   └── discover-events.ts         # Backwards Event Scanner (Zero-Indexer Dependency)
-├── test/                          # Hardhat Unit & Integration Test Suites
+├── test/                          # Hardhat Unit and Integration Test Suites
 │   ├── DivergenceRouter.test.ts   # 100% Invariant Unit Tests
 │   └── integration/               # Live Testnet Integration Tests
-├── assets/                        # Brand Assets & Specular Logos
+├── assets/                        # Brand Assets and Specular Logos
 ├── SDK-FEEDBACK.md                # 3 Architectural Proposals for the DreamDEX Team
 ├── README.md                      # Master Protocol Documentation
 └── .env.example                   # Safe Environment Variable Template
@@ -286,18 +287,18 @@ dreamdex-divergence-router/
 
 ---
 
-## 📄 Hackathon Deliverables & Evaluation Mapping
+## Hackathon Deliverables and Evaluation Mapping
 
 | Hackathon Criterion | Weight | How Divergence Router Wins |
 | :--- | :---: | :--- |
-| **Innovation & Originality** | **20%** | Moves beyond 1D coin-flips into Somnia's first 2D structured relative-value / decorrelation execution engine. |
+| **Innovation and Originality** | **20%** | Moves beyond 1D coin-flips into Somnia's first 2D structured relative-value / decorrelation execution engine. |
 | **Technical Implementation** | **25%** | EVM-level atomic router (`DivergenceRouter.sol`), on-chain pre-flight checks, 100% automated test coverage, and live Shannon testnet deployment. |
-| **User Experience & Design** | **20%** | Frameless institutional terminal (titanium/obsidian palette, zero card boxes, live Web Audio synthesis, interactive 4-Quadrant Payoff modal). |
-| **Business & Ecosystem Impact**| **20%** | Drives organic two-sided trading volume into DreamDEX order books, bridging liquidity across disparate windows. |
-| **Demo Clarity & Feedback** | **15%** | High-impact video walkthrough showcasing sub-380ms execution and an in-depth architectural feedback report ([`SDK-FEEDBACK.md`](./SDK-FEEDBACK.md)). |
+| **User Experience and Design** | **20%** | Frameless institutional terminal (titanium/obsidian palette, zero card boxes, live Web Audio synthesis, interactive 4-Quadrant Payoff modal). |
+| **Business and Ecosystem Impact**| **20%** | Drives organic two-sided trading volume into DreamDEX order books, bridging liquidity across disparate windows. |
+| **Demo Clarity and Feedback** | **15%** | High-impact video walkthrough showcasing sub-380ms execution and an in-depth architectural feedback report ([`SDK-FEEDBACK.md`](./SDK-FEEDBACK.md)). |
 
 ---
 
-## 📜 License
+## License
 
-This project is licensed under the [MIT License](./LICENSE). Built for the **Somnia × DreamDEX Event Contracts Hackathon 2026**.
+This project is licensed under the [MIT License](./LICENSE). Built for the **Somnia x DreamDEX Event Contracts Hackathon 2026**.
